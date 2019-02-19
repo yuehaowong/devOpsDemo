@@ -8,6 +8,7 @@ So you'll only fork this repo to one partner's account.  After you've forked it,
 
 Before we get started, let's just make sure that the application loads with live updates/HMR without any kind of containerization.  We won't have full functionality, as we don't have a database hooked up yet, but don't worry, we will!
 
+1. Clone this repo
 1. Run `npm install`
 1. Run `npm run dev:hot`
 
