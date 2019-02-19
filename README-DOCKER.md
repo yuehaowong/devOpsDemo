@@ -117,9 +117,9 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
     - RUN a command to build your application in the container
 
-    - EXPOSE your server port
+    - EXPOSE your server port (3000)
 
-    - Run the server with CMD
+    - Create an [ENTRYPOINT](https://medium.freecodecamp.org/docker-entrypoint-cmd-dockerfile-best-practices-abc591c30e21) where you'll run `node ./server/server.js`
 
 1. Build the docker image from the Dockerfile
 
