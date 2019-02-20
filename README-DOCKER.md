@@ -155,7 +155,9 @@ So we can build an image that creates a container that runs our application.  Gr
 
 But meanwhile, what about development?  Our production container isn't running webpack-dev-server, so we're not getting live reloading/HMR.  
 
-Wouldn't it be really cool if we could get the benefits of live reloading/HMR by running webpack-dev-server in a development container?  Wouldn't it also be swell if we had another container that hosted a local version of our database to use for development?  You bet it would.  And we can.  All we need to do is build these images and run the containers.  And we can rest assured that the dependencies across our production and development containers will stay in sync because we'll npm install from the same package.json and package-lock.json in those containers.
+Wouldn't it be really cool if we could get the benefits of live reloading/HMR by running webpack-dev-server in a development container?  Wouldn't it also be swell if we had another container that hosted a local version of our database to use for development?  You bet it would.  And we can.  All we need to do is build these images and run the containers.  
+
+And we can rest assured that the dependencies across our production and development containers will stay in sync because we'll npm install from the same package.json and package-lock.json in those containers.
 
 Now, we could spin up these development containers in proper order manually every time we wanted to run our app, but wouldn't it be *even better* if we could write up a configuration file that would handle all of that with a single command?  Yes, yes it would.
 
@@ -235,7 +237,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
     - Start FROM a baseline image of postgres v9.6.8
 
-    - COPY the sql script in the ./scripts directory to /docker-entrypoint-initdb.d/ in the container.  Whenever the container spins up, scripts in that directory get executed automatically.  This will create and populate our database in the container.
+    - COPY the sql script from `./scripts/init_db.sql` to `/docker-entrypoint-initdb.d/` in the container.  Whenever the container spins up, scripts in that directory get executed automatically.  This will create and populate our database in the container.
 
 1. Build the docker image from Dockerfile-postgres
 
@@ -335,7 +337,7 @@ We know the value of testing.  Let's set up another docker-compose config that w
 
 ### Part 4 - Docker Hub
 
-1. Now we can push our images up to Docker Hub
+1. Now we can push our images up to Docker Hub to be shared with the development team
 
     - `docker push [orgname]/mm-postgres`
     - `docker push [orgname]/mm-dependencies`
