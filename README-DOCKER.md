@@ -316,9 +316,9 @@ We know the value of testing.  Let's set up another docker-compose config that w
             - A **container_name** key set to something meaningful like 'mm-test-database'
 
             - Create an **environment** key that contains an array.  We'll add three elements to the array:
-                  - POSTGRES_PASSWORD=admin
-                  - POSTGRES_USER=mmadmin
-                  - POSTGRES_DB=mmdb
+              - POSTGRES_PASSWORD=admin
+              - POSTGRES_USER=mmadmin
+              - POSTGRES_DB=mmdb
 
             - Create a **volumes** key that contains an array.  
 
