@@ -307,7 +307,7 @@ We know the value of testing.  Let's set up another docker-compose config that w
 
         - Now create a **postgres-db-test** dictionary as the second key in the **services** dictionary
 
-        - Under **postgres-eb-test**, create the following:
+        - Under **postgres-db-test**, create the following:
 
             - An **image** key pointing to your [orgname]/mm-postgres image
 
