@@ -97,7 +97,7 @@ docker image rm $(docker images [orgname]/mm* -q) --force
 docker volume rm $(docker volume ls -q -f 'name=unit-13*') --force
 ```
 
-One _could_ even consider putting these commands together in their package.json scripts using `&&` to ensure that each prior command was successful before executing the next in the chain...
+One _could_ even consider putting these commands together in their package.json script using `&&` to ensure that each prior command was successful before executing the next in the chain...
 
 ```bash
 docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker image rm $(docker images [orgname]/mm* -q) --force && docker volume rm $(docker volume ls -q -f 'name=unit-13*') --force
@@ -151,13 +151,13 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
 ### Part 2 - Docker Compose
 
-So we can build an image that creates a container that runs our application.  Great!
+So we can build an image that creates a container that runs our application.  Great!  We'll use that Dockerfile later when we're building our container for production from Travis-CI.
 
-However, you may have noticed that we aren't running webpack-dev-server, so we're not getting live reloading/HMR.  
+But meanwhile, what about development?  Our production container isn't running webpack-dev-server, so we're not getting live reloading/HMR.  
 
-Wouldn't it be really cool if we could get the benefits of live reloading/HMR by running webpack-dev-server in a container?  Wouldn't it also be swell if we had a container that hosted a local version of our database to use for development?  You bet it would.  And we can.  All we need to do is build these images and run the containers.
+Wouldn't it be really cool if we could get the benefits of live reloading/HMR by running webpack-dev-server in a development container?  Wouldn't it also be swell if we had another container that hosted a local version of our database to use for development?  You bet it would.  And we can.  All we need to do is build these images and run the containers.  And we can rest assured that the dependencies across our production and development containers will stay in sync because we'll npm install from the same package.json and package-lock.json in those containers.
 
-Now, we could spin up these containers in proper order manually every time we wanted to run our app, but wouldn't it be even better if we could write up a configuration file that would handle all of that with a single command?  Yes, yes it would.
+Now, we could spin up these development containers in proper order manually every time we wanted to run our app, but wouldn't it be *even better* if we could write up a configuration file that would handle all of that with a single command?  Yes, yes it would.
 
 All of this can be ours by building a couple of images and orchestrating them with the **docker-compose** utility.
 
@@ -172,8 +172,6 @@ To begin, let's build an image that will create a container running webpack-dev-
     - Set up a WORKDIR for application in the container
 
     - COPY your package*.json (to get both package and package-lock) files to the WORKDIR in the container
-
-    - RUN a command to build your application in the container
 
     - RUN a command to npm install your node_modules in the container
 
@@ -217,11 +215,11 @@ To begin, let's build an image that will create a container running webpack-dev-
 
                 - In our first element, we'll want to mount our current directory to the `/usr/src/app` directory in the container.  This will allow the webpack-dev-server running in the container to watch for code changes in our file system outside the container.
 
-                - In our next element, we'll mount a volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.
+                - In our next element, we'll mount a [named volume](https://nickjanetakis.com/blog/docker-tip-28-named-volumes-vs-path-based-volumes) we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.  The difference between a named volume and a path based volume (as we used in the first element) is that Docker handles where to create named volumes in your host filesystem.  If you just need the data to persist and don't care necessarily *where* it persists, use a named volume.  (You'll just need to include the named volume under the top level `volumes` key, which we'll do below)
 
             - A **command** key that executes `npm run dev:hot` in the container.  You'll see in `package.json` that this starts your node server and webpack-dev-server.  The `proxy` settings in our `webpack.config.js` will route all traffic to the `api` route to the node server at port 3000.
 
-    - Create a **volumes** dictionary where we'll declare the named volume(s) we're mounting in our container(s)
+    - Create a **volumes** dictionary where we'll create the named volume(s) we're mounting in our container(s)
 
         - Create an empty **node_modules** key.  
 
@@ -266,9 +264,9 @@ To begin, let's build an image that will create a container running webpack-dev-
 
         - A **volumes** key that contains an array.  
 
-            - In our single element here, we'll want to mount a volume we'll call 'dev-db-volume' to the `/var/lib/postgresql/data` directory in the container.  This is where postgres stores the actual data files that make up your database.  This volume will persist the data between container starts and stops.
+            - In our single element here, we'll want to mount a named volume we'll call 'dev-db-volume' to the `/var/lib/postgresql/data` directory in the container.  This is where postgres stores the actual data files that make up your database.  This volume will persist the data between container starts and stops.
 
-    - Under the **volumes** dictionary, add an empty **dev-db-volume** key.
+    - Under the **volumes** dictionary, create the named volume with an empty **dev-db-volume** key.
 
     - We only want our **dev** service to start _after_ our **postgres-db** service has started.  We can do that by adding a **depends_on** array to our **dev** dictionary and set the first element to **postgres-db**
 
@@ -303,7 +301,7 @@ We know the value of testing.  Let's set up another docker-compose config that w
 
                 - In our first element, we'll want to mount our current directory to the `/usr/src/app` directory in the container.
 
-                - In our next element, we'll mount a volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.
+                - In our next element, we'll mount a named volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.
 
             - A **command** key that executes `npm run test`
 
@@ -322,11 +320,11 @@ We know the value of testing.  Let's set up another docker-compose config that w
 
             - Create a **volumes** key that contains an array.  
 
-                  - In our single element here, we'll want to mount a volume we'll call 'test-db-volume' to the `/var/lib/postgresql/data` directory in the container.  This is where postgres stores the actual data files that make up your database.  This volume will persist the data between container starts and stops.
+                  - In our single element here, we'll want to mount a named volume we'll call 'test-db-volume' to the `/var/lib/postgresql/data` directory in the container.  This is where postgres stores the actual data files that make up your database.  This volume will persist the data between container starts and stops.
 
     - We only want our **test** service to start _after_ our **postgres-db-test** service has started.  We can do that by adding a **depends_on** array to our **test** dictionary and set the first element to **postgres-db-test**
 
-    - Create a **volumes** dictionary where we'll declare the named volume(s) we're mounting in our container(s)
+    - Create a **volumes** dictionary where we'll create the named volume(s) we're mounting in our container(s)
 
         - Create an empty **node_modules** key.
         - Create an empty **test-db-volume** key.
@@ -365,6 +363,10 @@ Once you have successfully containerized your application and **both** partners 
     1. Create a file in your top level repo directory called `docker-compose.yml`.  This is the docker-compose default configuration file.
 
     - Set the docker-compose **version** to 3
+    
+    - Create a **volumes** dictionary where we'll create the named volume(s) we're mounting in our container(s)
+
+      - Create an empty **node_modules** key.
 
     - Create a **services** dictionary
 
@@ -380,7 +382,7 @@ Once you have successfully containerized your application and **both** partners 
 
                 - In our first element, we'll want to mount our current directory to the `/usr/src/app` directory in the container.  This will allow us to update our package.json with the current version of the package.
 
-                - In our next element, we'll mount a volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.
+                - In our next element, we'll mount a named volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.
 
     1. We can now run this container and install the new dependency using
 
