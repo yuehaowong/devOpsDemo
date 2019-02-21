@@ -151,7 +151,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
     `docker run -p 3001:3000 [orgname]/mm-prod`
 
-    You should see the server start up.  Now just go to your browser and navigate to localhost:3001 to see the application running from within your container!
+    You should see the server start up.  Now just go to your browser and navigate to localhost:3001 to see the application running from within your container!  (You can also run the container in 'detached' mode by passing the `-d` flag.  This will run the container and give you access to your command line.)
 
     You can also verify that the container has been created by listing the current running containers
 
@@ -159,7 +159,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
     Note the NAME in the output.  Docker generates a random name for us that we can use to reference the container.  We can specify the name if we include a `--name <name>` parameter when we invoke `docker run`.
 
-    We can stop our container by hitting cmd-C or by opening another terminal and issuing the stop command.
+    We can stop our container by hitting `^C` or by issuing the stop command (either from another terminal or if you're running in detached mode.)
 
     `docker stop <container_name>`
 
