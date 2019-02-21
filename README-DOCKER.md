@@ -71,6 +71,20 @@ We'll begin by containerizing this application.  For now, let's just get an imag
 
 Configuring Docker *can* be a bit confusing at times.  You may find that your docker images, containers, or volumes aren't working as you hoped.  Don't worry!  Here are a couple of things you can do to set things right.
 
+#### Login to a *running* container
+Any time you're wondering what's *really* going on in your container, you can always just login through an *interactive terminal* and take a look.
+
+```bash
+docker exec -it <container-name> /bin/bash
+```
+
+You can run any linux command that would run in the container after the `<container-name>`.  In this case, we're starting up a bash shell to get to the command line inside of our container.  You could also login to a database in a container running postgres by invoking
+
+```bash
+docker exec -it <container-name> psql -U <username> <database-name>
+```
+
+#### Stop containers
 First, try stopping all of your running containers.  We can do this using the linux `$()` construct.  This will execute a command and return what would have been written to the screen (or STDOUT).  The -f parameter here is useful if you have more than one project using Docker.  This ensures that you're only affecting the containers for this project.  If you only have this project using Docker, you don't need to use that parameter.
 
 ```bash
@@ -85,7 +99,7 @@ docker stop $(docker ps -q -a -f 'name=mm-' --filter status=running)
 docker rm $(docker ps -q -a -f 'name=mm-') --force
 ```
 
-#### Remove all images
+#### Remove images
 
 ```bash
 docker image rm $(docker images [orgname]/mm* -q) --force
@@ -215,9 +229,15 @@ To begin, let's build an image that will create a container running webpack-dev-
 
             - A **volumes** key that contains an array.  
 
-                - In our first element, we'll want to mount our current directory to the `/usr/src/app` directory in the container.  This will allow the webpack-dev-server running in the container to watch for code changes in our file system outside the container.
-
-                - In our next element, we'll mount a [named volume](https://nickjanetakis.com/blog/docker-tip-28-named-volumes-vs-path-based-volumes) we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.  The difference between a named volume and a path based volume (as we used in the first element) is that Docker handles where to create named volumes in your host filesystem.  If you just need the data to persist and don't care necessarily *where* it persists, use a named volume.  (You'll just need to include the named volume under the top level `volumes` key, which we'll do below)
+                - In our first element, we'll want to mount the current directory on our host machine to the `/usr/src/app` directory in the container.  This will allow the webpack-dev-server running in the container to watch for code changes in our file system outside the container.  This is great because now we have live reloading and HMR.  
+                
+                   However, it's important to note that by virtue of mounting our current directory here (which does not include the files in node_modules), we are effectively overwriting the node_modules from our mm-dependencies image (that we populated in the image by running npm install) with an empty directory in the top level read-write layer of our container.  So, in order to preserve our node modules, we'll mount a [named volume](https://nickjanetakis.com/blog/docker-tip-28-named-volumes-vs-path-based-volumes) in the next element.  
+                   
+                   The main difference between a named volume and a path based volume (as we used in our first element) is that Docker handles the question of *where* to create named volumes in your host filesystem.  If you just need the data to persist and don't care necessarily *where* it persists, use a named volume.  (You'll just need to include the named volume under the top level `volumes` key, which we'll do below)
+                   
+                   Another difference between a named volume and a path based volume (and the aspect that allows access to the node_modules we installed in our image) is that named volumes are initialized when a container is created. If the container’s base image contains data at the specified mount point, that **existing data is copied into the new volume** upon volume initialization, which makes it available within the container. This does not apply when mounting a host directory.
+                   
+                - And so, in our next element, we'll mount a named volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.  
 
             - A **command** key that executes `npm run dev:hot` in the container.  You'll see in `package.json` that this starts your node server and webpack-dev-server.  The `proxy` settings in our `webpack.config.js` will route all traffic to the `api` route to the node server at port 3000.
 
