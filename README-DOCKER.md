@@ -179,7 +179,7 @@ All of this can be ours by building a couple of images and orchestrating them wi
 
 To begin, let's build an image that will create a container running webpack-dev-server.
 
-1. Create a file in the top level directory called `Dockerfile-dependencies` that implements the following
+1. Create a file in the top level directory called `Dockerfile-dev` that implements the following
 
     - Start FROM a baseline image of node v10.1
 
@@ -193,11 +193,11 @@ To begin, let's build an image that will create a container running webpack-dev-
 
     - EXPOSE your server port
 
-1. Build the docker image from Dockerfile-dependencies
+1. Build the docker image from Dockerfile-dev
 
-    Tag the image as mm-dependencies so it will be easy to recognize and reference.  This time, we'll tell docker to use our Dockerfile-dependencies file using the -f parameter
+    Tag the image as mm-dev so it will be easy to recognize and reference.  This time, we'll tell docker to use our Dockerfile-dev file using the -f parameter
 
-    `docker build -t [orgname]/mm-dependencies -f Dockerfile-dependencies .`
+    `docker build -t [orgname]/mm-dev -f Dockerfile-dev .`
 
     Let's verify that the image has been created by listing the docker images on your machine.
 
@@ -221,7 +221,7 @@ To begin, let's build an image that will create a container running webpack-dev-
         
         - Under **dev**, create the following:
 
-            - An **image** key pointing to your [orgname]/mm-dependencies image
+            - An **image** key pointing to your [orgname]/mm-dev image
 
             - A **container_name** key set to something meaningful like 'mm-dev-hot'
 
@@ -231,7 +231,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
                 - In our first element, we'll want to mount the current directory on our host machine to the `/usr/src/app` directory in the container.  This will allow the webpack-dev-server running in the container to watch for code changes in our file system outside the container.  This is great because now we have live reloading and HMR.  
                 
-                   However, it's important to note that by virtue of mounting our current directory here (which does not include the files in node_modules), we are effectively overwriting the node_modules from our mm-dependencies image (that we populated in the image by running npm install) with an empty directory in our container.  So, in order to preserve our node modules, we'll mount a [named volume](https://nickjanetakis.com/blog/docker-tip-28-named-volumes-vs-path-based-volumes) in the next element.  
+                   However, it's important to note that by virtue of mounting our current directory here (which does not include the files in node_modules), we are effectively overwriting the node_modules from our mm-dev image (that we populated in the image by running npm install) with an empty directory in our container.  So, in order to preserve our node modules, we'll mount a [named volume](https://nickjanetakis.com/blog/docker-tip-28-named-volumes-vs-path-based-volumes) in the next element.  
                    
                    The main difference between a named volume and a path based volume (as we used in our first element) is that Docker handles the question of *where* to create named volumes in your host filesystem.  If you just need the data to persist and don't care necessarily *where* it persists, use a named volume.  (You'll just need to include the named volume under the top level `volumes` key, which we'll do below)
                    
@@ -317,7 +317,7 @@ We know the value of testing.  Let's set up another docker-compose config that w
 
         - Under **test**, create the following:
 
-            - An **image** key pointing to your [orgname]/mm-dependencies image
+            - An **image** key pointing to your [orgname]/mm-dev image
 
             - A **container_name** key set to something meaningful like 'mm-test'
 
@@ -364,7 +364,7 @@ We know the value of testing.  Let's set up another docker-compose config that w
 1. Now we can push our images up to Docker Hub to be shared with the development team
 
     - `docker push [orgname]/mm-postgres`
-    - `docker push [orgname]/mm-dependencies`
+    - `docker push [orgname]/mm-dev`
     - `docker push [orgname]/mm-prod`
 
 1. Check your organization page in Docker Hub to verify that your images are there
@@ -398,7 +398,7 @@ Once you have successfully containerized your application and **both** partners 
 
         - Under **services**, create a **bash** dictionary, so when we run `docker-compose bash`, it will know to look here.  We'll add other services later when we incorporate CI/CD.  For now, the rest of this goes under the **bash** dictionary.
 
-        - Create an **image** element pointing to your [orgname]/mm-dependencies image
+        - Create an **image** element pointing to your [orgname]/mm-dev image
 
         - Create a **container_name** element set to something meaningful like 'mm-dep'
 
@@ -414,16 +414,16 @@ Once you have successfully containerized your application and **both** partners 
 
         `docker-compose run --rm --service-ports bash npm install --save (or --save-dev) [package-name]`
 
-    1. Remove the current mm-dependencies image
+    1. Remove the current mm-dev image
 
-        `docker image rm [orgname]/mm-dependencies --force`
+        `docker image rm [orgname]/mm-dev --force`
 
     1. Build a new image with your updated package.json
 
-        `docker build -t [orgname]/mm-dependencies -f Dockerfile-dependencies .`
+        `docker build -t [orgname]/mm-dev -f Dockerfile-dev .`
 
     1. Now we can push our new image with the updated dependencies to Docker hub.
 
-        `docker push [orgname]/mm-dependencies`
+        `docker push [orgname]/mm-dev`
 
         Note: In order for other members of your team to get access to your new image, they'll need to clear out the image on their machines and pull the latest version.

@@ -71,6 +71,7 @@ Great, we have an AWS account!  Let's use it.  We'll start by creating a new app
     - Once this is complete, open the Dashboard for your new environment and follow the URL at the top to see your application running in the cloud.
 
 ### Part 4 - Getting CLI Access your EC2 instance
+
 Well that wasn't too bad at all.  We've got a server running in the cloud, hosting our full stack React/Redux application.  So, how can we log into this server and check things out from the command line?
 
 We're going to use a network protocol called SSH (Secure Shell).  This will allow us to log in to our EC2 instance across a secure channel.  We'll also be able to log in without having to enter a password.  
@@ -96,7 +97,6 @@ Yep!  SSH allows us to use a **key pair** where the server has a public key and 
         - `cd /var/log/eb-docker/containers/eb-current-app/`
     - To see them sorted by date
         - `ls -ltr`
-
 
 ### Part 5 - RDS
 
@@ -148,15 +148,14 @@ We won't be using ECR immediately, but this will become useful when we incorpora
     - Head over to ECR from the Services menu and `Create a repository`.  Let's name it `mm` for megamarkets.
 
     - Note the URI.  You'll come back for this in your CI/CD setup later.
-    
-    
+
 1. #### Give your EC2 instances access to ECR
 
 While IAM access control for users is managed with 'Users' and 'Groups', access control for AWS services is managed via 'Roles'.  We're going to need to be able to access ECR from our EC2 instance, so let's go over to IAM and authorize!
 
-   - Select 'Roles' from the side menu
-   - Find and select `aws-elasticbeanstalk-ec2-role`
-   - Attach the `AmazonEC2ContainerRegistryReadOnly` policy to this role.
+    - Select 'Roles' from the side menu
+    - Find and select `aws-elasticbeanstalk-ec2-role`
+    - Attach the `AmazonEC2ContainerRegistryReadOnly` policy to this role.
 
 ### Part 9 - Environment Variables
 
@@ -203,7 +202,6 @@ We're nearly done!  Now all we have to do is give our application all of the inf
     1. Change the Environment Type to 'Load Balanced'
 
         Take the default settings for now.  (The default triggers scale when the average outbound network traffic from each instance is higher than 6 MB or lower than 2 MB over a period of five minutes.)
-
 
 1. ### Set up DNS with Route 53
     **Note: Domain names are not free with AWS.  If you do this your credit card will be charged for the domain name registration.**
