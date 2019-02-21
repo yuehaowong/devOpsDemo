@@ -126,9 +126,9 @@ As we create these files, we'll need two things from AWS:
     # Upload zip file to s3 bucket
     aws s3 cp mm-prod-deploy.zip s3://$EB_BUCKET/mm-prod-deploy.zip
     # Create a new application version with new Dockerrun
-    aws elasticbeanstalk create-application-version --application-name megamarkets --version-label $TRAVIS_COMMIT --source-bundle S3Bucket=$EB_BUCKET,S3Key=mm-prod-deploy.zip
+    aws elasticbeanstalk create-application-version --application-name [your eb application name] --version-label $TRAVIS_COMMIT --source-bundle S3Bucket=$EB_BUCKET,S3Key=mm-prod-deploy.zip
     # Update environment to use new version number
-    aws elasticbeanstalk update-environment --environment-name megamarkets-prod --version-label $TRAVIS_COMMIT
+    aws elasticbeanstalk update-environment --environment-name [your eb environment name] --version-label $TRAVIS_COMMIT
     ```
 
 ### Part 3 - Deploy!
