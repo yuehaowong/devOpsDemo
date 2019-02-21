@@ -103,7 +103,7 @@ As we create these files, we'll need two things from AWS:
 
 1. #### Create `deploy.sh` in the `./scripts` directory
 
-    This bash script moves all the files from our current build to the appropriate places in AWS to deploy our code.
+    This bash script moves all the files from our current build to the appropriate places in AWS to deploy our code.  Note that where you see `$TRAVIS_COMMIT` here, that is an environment variable supplied by Travis-CI that contains a SHA generated hash key that uniquely identifies this build.
 
     ```bash
     echo "Processing deploy.sh"
@@ -119,7 +119,7 @@ As we create these files, we'll need two things from AWS:
     docker tag [orgname]/mm:latest [ECR URI]:$TRAVIS_COMMIT
     # Push built image to ECS
     docker push [ECR URI]:$TRAVIS_COMMIT
-    # Use the linux sed command to replace the text '<VERSION>' in our Dockerrun file with the Travis-CI SHA
+    # Use the linux sed command to replace the text '<VERSION>' in our Dockerrun file with the Travis-CI SHA key
     sed -i='' "s/<VERSION>/$TRAVIS_COMMIT/" Dockerrun.aws.json
     # Zip up our codebase, along with modified Dockerrun and our .ebextensions directory
     zip -r mm-prod-deploy.zip Dockerrun.aws.json .ebextensions
