@@ -53,7 +53,7 @@ As we create these files, we'll need two things from AWS:
         - pip install --user awscli
         # install the elastic beanstalk cli
         - pip install --user awsebcli
-        # Append exe location to our PATH 
+        # Append exe location to our PATH
         - export PATH=$PATH:$HOME/.local/bin
         ```
 
@@ -113,8 +113,8 @@ As we create these files, we'll need two things from AWS:
     aws configure set default.region us-west-1
     # Log in to ECR
     eval $(aws ecr get-login --no-include-email --region us-west-1)
-    # Build docker image based on our default Dockerfile
-    docker build -t [orgname]/mm .
+    # Build docker image based on our Dockerfile-prod
+    docker build -t [orgname]/mm -f Dockerfile-prod .
     # tag the image with the Travis-CI SHA
     docker tag [orgname]/mm:latest [ECR URI]:$TRAVIS_COMMIT
     # Push built image to ECS

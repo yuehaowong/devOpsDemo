@@ -72,6 +72,7 @@ We'll begin by containerizing this application.  For now, let's just get an imag
 Configuring Docker *can* be a bit confusing at times.  You may find that your docker images, containers, or volumes aren't working as you hoped.  Don't worry!  Here are a couple of things you can do to set things right.
 
 #### Login to a *running* container
+
 Any time you're wondering what's *really* going on in your container, you can always just login through an *interactive terminal* and take a look.
 
 ```bash
@@ -85,6 +86,7 @@ docker exec -it <container-name> psql -U <username> <database-name>
 ```
 
 #### Stop containers
+
 First, try stopping all of your running containers.  We can do this using the linux `$()` construct.  This will execute a command and return what would have been written to the screen (or STDOUT).  The -f parameter here is useful if you have more than one project using Docker.  This ensures that you're only affecting the containers for this project.  If you only have this project using Docker, you don't need to use that parameter.
 
 ```bash
@@ -119,7 +121,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
 ### Part 1 - Dockerfile
 
-1. Create a file in the top level directory called `Dockerfile` that implements the following
+1. Let's start by creating our production Dockerfile.  Create a file in the top level directory and name it `Dockerfile-prod` that implements the following
 
     - Start FROM a baseline image of node v10.1
 
@@ -135,11 +137,11 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
     - Create an [ENTRYPOINT](https://medium.freecodecamp.org/docker-entrypoint-cmd-dockerfile-best-practices-abc591c30e21) where you'll run `node ./server/server.js`
 
-1. Build the docker image from the Dockerfile
+1. Build the docker image from Dockerfile-prod
 
-    Tag the image as mm-prod so it will be easy to recognize and reference.  By default, Docker will look for the Dockerfile in the current directory.  That's also where we'll tell it to build the image.
+    Tag the image as mm-prod so it will be easy to recognize and reference.  Tell it to use  Dockerfile-prod for configuration and finally tell it to build in the current directory with `.`.
 
-    `docker build -t [orgname]/mm-prod .`
+    `docker build -t [orgname]/mm-prod -f Dockerfile-prod .`
 
     We can verify that the image has been created by listing the docker images on your machine.
 
@@ -165,7 +167,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
 ### Part 2 - Docker Compose
 
-So we can build an image that creates a container that runs our application.  Great!  We'll use that Dockerfile later when we're building our container for production from Travis-CI.
+So we can build an image that creates a container that runs our application.  Great!  We'll use that Dockerfile-prod later when we're building our container for production from Travis-CI.
 
 But meanwhile, what about development?  Our production container isn't running webpack-dev-server, so we're not getting live reloading/HMR.  
 
@@ -218,7 +220,7 @@ To begin, let's build an image that will create a container running webpack-dev-
     - Create a **services** dictionary
 
         - Create a **dev** dictionary as the first key in the **services** dictionary
-        
+
         - Under **dev**, create the following:
 
             - An **image** key pointing to your [orgname]/mm-dev image
@@ -230,13 +232,13 @@ To begin, let's build an image that will create a container running webpack-dev-
             - A **volumes** key that contains an array.  
 
                 - In our first element, we'll want to mount the current directory on our host machine to the `/usr/src/app` directory in the container.  This will allow the webpack-dev-server running in the container to watch for code changes in our file system outside the container.  This is great because now we have live reloading and HMR.  
-                
-                   However, it's important to note that by virtue of mounting our current directory here (which does not include the files in node_modules), we are effectively overwriting the node_modules from our mm-dev image (that we populated in the image by running npm install) with an empty directory in our container.  So, in order to preserve our node modules, we'll mount a [named volume](https://nickjanetakis.com/blog/docker-tip-28-named-volumes-vs-path-based-volumes) in the next element.  
-                   
+
+                    However, it's important to note that by virtue of mounting our current directory here (which does not include the files in node_modules), we are effectively overwriting the node_modules from our mm-dev image (that we populated in the image by running npm install) with an empty directory in our container.  So, in order to preserve our node modules, we'll mount a [named volume](https://nickjanetakis.com/blog/docker-tip-28-named-volumes-vs-path-based-volumes) in the next element.  
+
                    The main difference between a named volume and a path based volume (as we used in our first element) is that Docker handles the question of *where* to create named volumes in your host filesystem.  If you just need the data to persist and don't care necessarily *where* it persists, use a named volume.  (You'll just need to include the named volume under the top level `volumes` key, which we'll do below)
-                   
+
                    Another difference between a named volume and a path based volume (and the aspect that allows access to the node_modules we installed in our image) is that named volumes are initialized when a container is created. If the container’s base image contains data at the specified mount point, that **existing data is copied into the new volume** upon volume initialization, which makes it available within the container. This does not apply when mounting a host directory.
-                   
+
                 - And so, in our next element, we'll mount a named volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.  
 
             - A **command** key that executes `npm run dev:hot` in the container.  You'll see in `package.json` that this starts your node server and webpack-dev-server.  The `proxy` settings in our `webpack.config.js` will route all traffic to the `api` route to the node server at port 3000.
@@ -251,8 +253,8 @@ To begin, let's build an image that will create a container running webpack-dev-
 
 - Check out your running application at localhost:8080.  Then let's verify that the live reloading is working by changing the text color in your styles.css file.  It should reload the page with the new color.  Voila!
 
-    If you want to stop the container, you can hit `^C`, or 
-    
+    If you want to stop the container, you can hit `^C`, or
+
     `docker-compose -f docker-compose-dev-hot.yml down`
 
 Okay, we've got a containerized environment with live reloading/HMR working for our application.  But we still want to add a local development database.  This will enable us to work on new features without worrying about our test data affecting production.
@@ -389,7 +391,7 @@ Once you have successfully containerized your application and **both** partners 
     1. Create a file in your top level repo directory called `docker-compose.yml`.  This is the docker-compose default configuration file.
 
     - Set the docker-compose **version** to 3
-    
+
     - Create a **volumes** dictionary where we'll create the named volume(s) we're mounting in our container(s)
 
       - Create an empty **node_modules** key.
@@ -400,7 +402,7 @@ Once you have successfully containerized your application and **both** partners 
 
         - Create an **image** element pointing to your [orgname]/mm-dev image
 
-        - Create a **container_name** element set to something meaningful like 'mm-dep'
+        - Create a **container_name** element set to something meaningful like 'mm-dev'
 
         - Create a **ports** element that contains an array.  We'll just have one value that will route requests from port 8080 on the host to port 8080 in the container.
 
