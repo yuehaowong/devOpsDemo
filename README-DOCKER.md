@@ -251,6 +251,10 @@ To begin, let's build an image that will create a container running webpack-dev-
 
 - Check out your running application at localhost:8080.  Then let's verify that the live reloading is working by changing the text color in your styles.css file.  It should reload the page with the new color.  Voila!
 
+    If you want to stop the container, you can hit `^C`, or 
+    
+    `docker-compose -f docker-compose-dev-hot.yml down`
+
     Okay, we've got a containerized environment with live reloading/HMR working for our application.  But we still want to add a local development database.  This will enable us to work on new features without worrying about our test data affecting production.
 
 1. Create a file in the top level directory called `Dockerfile-postgres` that implements the following
