@@ -48,14 +48,6 @@ You are currently signed in with your root account.  This account should only be
 
     - From the Dashboard, you can customize your sign-in link.  If you do, you'll use this new custom name as the Account Id when you log in (before you enter your username and password)
 
-1. #### update your `aws-elasticbeanstalk-ec2-role`
-
-    - While access control for users is managed as 'Users', access control for AWS services is managed via 'Roles'.  We're going to need to be able to access ECR from our EC2 instance, so while we're here, let's authorize!
-
-        - Select 'Roles' from the side menu
-        - Find and select `aws-elasticbeanstalk-ec2-role`
-        - Attach the `AmazonEC2ContainerRegistryReadOnly` policy to this role.  
-
 ### Part 3 - Elastic Beanstalk
 
 Great, we have an AWS account!  Let's use it.  We'll start by creating a new application with Elastic Beanstalk, which you'll find in the Services menu dropdown.
@@ -156,7 +148,15 @@ We won't be using ECR immediately, but this will become useful when we incorpora
     - Head over to ECR from the Services menu and `Create a repository`.  Let's name it `mm` for megamarkets.
 
     - Note the URI.  You'll come back for this in your CI/CD setup later.
+    
+    
+1. #### Give your EC2 instances access to ECR
 
+While IAM access control for users is managed with 'Users' and 'Groups', access control for AWS services is managed via 'Roles'.  We're going to need to be able to access ECR from our EC2 instance, so let's go over to IAM and authorize!
+
+   - Select 'Roles' from the side menu
+   - Find and select `aws-elasticbeanstalk-ec2-role`
+   - Attach the `AmazonEC2ContainerRegistryReadOnly` policy to this role.
 
 ### Part 9 - Environment Variables
 
@@ -219,5 +219,3 @@ We're nearly done!  Now all we have to do is give our application all of the inf
             - If you've created a load balancer, you'll point your A record at the load balancer.
             - If you have a single instance, you'll point your A record at the Elastic Beanstalk environment
     1. You can check DNS propogation through sites like [dnschecker.org](https://dnschecker.org)
-
-1. Set up HTTPS access
