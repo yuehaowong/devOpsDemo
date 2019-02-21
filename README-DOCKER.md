@@ -255,7 +255,7 @@ To begin, let's build an image that will create a container running webpack-dev-
     
     `docker-compose -f docker-compose-dev-hot.yml down`
 
-    Okay, we've got a containerized environment with live reloading/HMR working for our application.  But we still want to add a local development database.  This will enable us to work on new features without worrying about our test data affecting production.
+Okay, we've got a containerized environment with live reloading/HMR working for our application.  But we still want to add a local development database.  This will enable us to work on new features without worrying about our test data affecting production.
 
 1. Create a file in the top level directory called `Dockerfile-postgres` that implements the following
 
