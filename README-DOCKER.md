@@ -378,7 +378,7 @@ We know the value of testing.  Let's set up another docker-compose config that w
 
 ## On to AWS
 
-Once you have successfully containerized your application and **both** partners are able to access it, open up the README-AWS file and start getting your application set up in the cloud!
+Once you have successfully containerized your application and **both** partners are able to access it, open up the [README-AWS](https://github.com/CodesmithLLC/unit-13-devops/blob/master/README-AWS.md) file and start getting your application set up in the cloud!
 
 ## Extensions
 
