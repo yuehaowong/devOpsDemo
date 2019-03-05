@@ -177,6 +177,8 @@ We're nearly done!  Now all we have to do is give our application all of the inf
 
 1. Add some markets, cards, reload the page, **revel in the glory of your achievement!**
 
+1. Don't get carried away with that, though.  We've got one more thing to implement: [CI/CD](https://github.com/CodesmithLLC/unit-13-devops/blob/master/README-TRAVIS.md)
+
 ## Extensions
 
 1. ### Set up AWS and EB CLI
