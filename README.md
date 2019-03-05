@@ -23,4 +23,4 @@ Now that we have our baseline application working, let's containerize it.  We'll
 
 **...and we'll never npm install in this directory again!** We'll be sourcing our node_modules from an image the whole team can share.
 
-Now, let's get this app containerized.  Go ahead and open up the README-DOCKER file and get started.
+Now, let's get this app containerized.  Go ahead and open up the [README-DOCKER](https://github.com/CodesmithLLC/unit-13-devops/blob/master/README-DOCKER.md) file and get started.
