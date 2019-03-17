@@ -348,7 +348,7 @@ We know the value of testing.  Let's set up another docker-compose config that w
 
             - Create a **volumes** key that contains an array.  
 
-                  - In our single element here, we'll want to mount a named volume we'll call 'test-db-volume' to the `/var/lib/postgresql/data` directory in the container.  This is where postgres stores the actual data files that make up your database.  This volume will persist the data between container starts and stops.
+              - In our single element here, we'll want to mount a named volume we'll call 'test-db-volume' to the `/var/lib/postgresql/data` directory in the container.  This is where postgres stores the actual data files that make up your database.  This volume will persist the data between container starts and stops.
 
     - We only want our **test** service to start _after_ our **postgres-db-test** service has started.  We can do that by adding a **depends_on** array to our **test** dictionary and set the first element to **postgres-db-test**
 
