@@ -183,7 +183,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
 1. Create a file in the top level directory called `Dockerfile-dev` that implements the following
 
-    - Start FROM a baseline image of node v10.1
+    - Start FROM a baseline image of node v10.15
 
     - RUN a command to npm install webpack globally in the container
 
@@ -263,7 +263,7 @@ Okay, we've got a containerized environment with live reloading/HMR working for 
 
     - Start FROM a baseline image of postgres v9.6.8
 
-    - COPY the sql script from `./scripts/init_db.sql` to `/docker-entrypoint-initdb.d/` in the container.  Whenever the container spins up, scripts in that directory get executed automatically.  This will create and populate our database in the container.
+    - COPY the sql script from `./scripts/db_init.sql` to `/docker-entrypoint-initdb.d/` in the container.  Whenever the container spins up, scripts in that directory get executed automatically.  This will create and populate our database in the container.
 
 1. Build the docker image from Dockerfile-postgres
 
