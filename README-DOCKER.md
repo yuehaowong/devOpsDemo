@@ -121,7 +121,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
 ### Part 1 - Dockerfile
 
-1. Let's start by creating our production Dockerfile.  Create a file in the top level directory and name it `Dockerfile-prod` that implements the following
+1. Let's start by creating our production Dockerfile.  Create a file in the top level directory and name it `Dockerfile` that implements the following
 
     - Start FROM a baseline image of node v10.1
 
@@ -137,11 +137,11 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
     - Create an [ENTRYPOINT](https://medium.freecodecamp.org/docker-entrypoint-cmd-dockerfile-best-practices-abc591c30e21) where you'll run `node ./server/server.js`
 
-1. Build the docker image from Dockerfile-prod
+1. Build the docker image from Dockerfile
 
-    Tag the image as mm-prod so it will be easy to recognize and reference.  Tell it to use  Dockerfile-prod for configuration and finally tell it to build in the current directory with `.`.
+    Tag the image as mm-prod so it will be easy to recognize and reference.  By default, docker will look for a file named Dockerfile.  We'll take advantage of that later when we upload this repo to AWS.  Finally tell it to build in the current directory with `.`.
 
-    `docker build -t [orgname]/mm-prod -f Dockerfile-prod .`
+    `docker build -t [orgname]/mm-prod -f .`
 
     We can verify that the image has been created by listing the docker images on your machine.
 
@@ -167,7 +167,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
 ### Part 2 - Docker Compose
 
-So we can build an image that creates a container that runs our application.  Great!  We'll use that Dockerfile-prod later when we're building our container for production from Travis-CI.
+So we can build an image that creates a container that runs our application.  Great!  
 
 But meanwhile, what about development?  Our production container isn't running webpack-dev-server, so we're not getting live reloading/HMR.  
 
