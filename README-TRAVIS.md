@@ -110,11 +110,11 @@ As we create these files, we'll need two things from AWS:
     # Set EB BUCKET as env variable
     EB_BUCKET=[S3 BUCKET NAME]
     # Set the default region for aws cli
-    aws configure set default.region us-west-1
+    aws configure set default.region [YOUR AWS REGION]
     # Log in to ECR
-    eval $(aws ecr get-login --no-include-email --region us-west-1)
-    # Build docker image based on our Dockerfile-prod
-    docker build -t [orgname]/mm -f Dockerfile-prod .
+    eval $(aws ecr get-login --no-include-email --region [YOUR AWS REGION])
+    # Build docker image based on our production Dockerfile
+    docker build -t [orgname]/mm .
     # tag the image with the Travis-CI SHA
     docker tag [orgname]/mm:latest [ECR URI]:$TRAVIS_COMMIT
     # Push built image to ECS
