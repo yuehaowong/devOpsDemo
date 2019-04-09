@@ -104,6 +104,8 @@ As we create these files, we'll need two things from AWS:
 1. #### Create `deploy.sh` in the `./scripts` directory
 
     This bash script moves all the files from our current build to the appropriate places in AWS to deploy our code.  Note that where you see `$TRAVIS_COMMIT` here, that is an environment variable supplied by Travis-CI that contains a SHA generated hash key that uniquely identifies this build.
+    
+    *Remember to swap out any values below in [ ] with appropriate values for your application (e.g. S3 BUCKET NAME, YOUR AWS REGION)*
 
     ```bash
     echo "Processing deploy.sh"
