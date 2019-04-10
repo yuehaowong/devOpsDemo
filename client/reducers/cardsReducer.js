@@ -59,7 +59,7 @@ const cardsReducer = (state=initialState, action) => {
       
     case types.ADD_MARKET:
       // increment counters
-      lastMarketId = action.marketId;
+      lastMarketId = state.lastMarketId + 1;
       totalMarkets = state.totalMarkets + 1;
 
       // create the new market from provided data
