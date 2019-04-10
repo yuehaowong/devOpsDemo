@@ -8,9 +8,9 @@ eval $(aws ecr get-login --no-include-email --region us-west-1)
 # Build docker image based on our production Dockerfile
 docker build -t picklewicklewickle/mm .
 # tag the image with the Travis-CI SHA
-docker tag picklewicklewickle/mm:latest elasticbeanstalk-us-west-1-367228244790:$TRAVIS_COMMIT
+docker tag picklewicklewickle/mm:latest 367228244790.dkr.ecr.us-west-1.amazonaws.com/mm:$TRAVIS_COMMIT
 # Push built image to ECS
-docker push elasticbeanstalk-us-west-1-367228244790:$TRAVIS_COMMIT
+docker push 367228244790.dkr.ecr.us-west-1.amazonaws.com/mm:$TRAVIS_COMMIT
 # Use the linux sed command to replace the text '<VERSION>' in our Dockerrun file with the Travis-CI SHA key
 sed -i='' "s/<VERSION>/$TRAVIS_COMMIT/" Dockerrun.aws.json
 # Zip up our codebase, along with modified Dockerrun and our .ebextensions directory
