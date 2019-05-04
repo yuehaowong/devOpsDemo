@@ -26,7 +26,7 @@ Containers are created from images with the `docker run` command.
 
 - The Dockerfile is a text file that contains the instructions that you would execute on the command line to create an image.
 - A Dockerfile is a step by step set of instructions.
-- Docker provides a set of standard instructions to be used in the Dockerfile, like `FROM, COPY, RUN, ENV, EXPOSE, CMD`  
+- Docker provides a set of standard instructions to be used in the Dockerfile, like `FROM, COPY, RUN, ENV, EXPOSE, CMD`
 - Docker will build a Docker image automatically by reading these instructions from the Dockerfile.
 - By default, the `docker run` command will look for a file named **Dockerfile** in the local directory.  You can specify a different Dockerfile name by passing the `-f` parameter
 
@@ -51,7 +51,7 @@ This would mount the current directory: `./` to `/usr/src/app` in the container.
 
     We have a way to collaboratively share code with Github.  Docker Hub gives us a way to collaboratively share images.
 
-    - One of you head over to [Docker Hub](https://hub.docker.com) and create an account with the dockerID that you used when you installed Docker.  
+    - One of you head over to [Docker Hub](https://hub.docker.com) and create an account with the dockerID that you used when you installed Docker.
 
     - Create an organization.  The name will need to be unique across all of Docker Hub, so this may take a couple of attempts.  You'll use this name as you go through the challenge anywhere you see `[orgname]`
 
@@ -145,7 +145,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
     We can verify that the image has been created by listing the docker images on your machine.
 
-    `docker images`  
+    `docker images`
 
 1. Create the container by running the image
 
@@ -167,11 +167,11 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
 ### Part 2 - Docker Compose
 
-So we can build an image that creates a container that runs our application.  Great!  
+So we can build an image that creates a container that runs our application.  Great!
 
-But meanwhile, what about development?  Our production container isn't running webpack-dev-server, so we're not getting live reloading/HMR.  
+But meanwhile, what about development?  Our production container isn't running webpack-dev-server, so we're not getting live reloading/HMR.
 
-Wouldn't it be really cool if we could get the benefits of live reloading/HMR by running webpack-dev-server in a development container?  Wouldn't it also be swell if we had another container that hosted a local version of our database to use for development?  You bet it would.  And we can.  All we need to do is build these images and run the containers.  
+Wouldn't it be really cool if we could get the benefits of live reloading/HMR by running webpack-dev-server in a development container?  Wouldn't it also be swell if we had another container that hosted a local version of our database to use for development?  You bet it would.  And we can.  All we need to do is build these images and run the containers.
 
 And we can rest assured that the dependencies across our production and development containers will stay in sync because we'll npm install from the same package.json and package-lock.json in those containers.
 
@@ -203,11 +203,11 @@ To begin, let's build an image that will create a container running webpack-dev-
 
     Let's verify that the image has been created by listing the docker images on your machine.
 
-    `docker images`  
+    `docker images`
 
 1. Create the container using docker-compose
 
-    This time, instead of running the image to create the container using the command line, we're going to make use of the docker-compose utility to run multiple containers (one for node_modules and another for our dev database).  
+    This time, instead of running the image to create the container using the command line, we're going to make use of the docker-compose utility to run multiple containers (one for node_modules and another for our dev database).
 
     First, we'll create a configuration file that docker-compose will use to orchestrate our containers.  You'll want to refer to the [docker docs](https://docs.docker.com/compose/overview/) to learn more about configuring docker-compose.
 
@@ -229,23 +229,23 @@ To begin, let's build an image that will create a container running webpack-dev-
 
             - A **ports** key that contains an array.  We'll just have one value that will route requests from port 8080 on the host to port 8080 in the container.
 
-            - A **volumes** key that contains an array.  
+            - A **volumes** key that contains an array.
 
-                - In our first element, we'll want to mount the current directory on our host machine to the `/usr/src/app` directory in the container.  This will allow the webpack-dev-server running in the container to watch for code changes in our file system outside the container.  This is great because now we have live reloading and HMR.  
+                - In our first element, we'll want to mount the current directory on our host machine to the `/usr/src/app` directory in the container.  This will allow the webpack-dev-server running in the container to watch for code changes in our file system outside the container.  This is great because now we have live reloading and HMR.
 
-                    However, it's important to note that by virtue of mounting our current directory here (which does not include the files in node_modules), we are effectively overwriting the node_modules from our mm-dev image (that we populated in the image by running npm install) with an empty directory in our container.  So, in order to preserve our node modules, we'll mount a [named volume](https://nickjanetakis.com/blog/docker-tip-28-named-volumes-vs-path-based-volumes) in the next element.  
+                    However, it's important to note that by virtue of mounting our current directory here (which does not include the files in node_modules), we are effectively overwriting the node_modules from our mm-dev image (that we populated in the image by running npm install) with an empty directory in our container.  So, in order to preserve our node modules, we'll mount a [named volume](https://nickjanetakis.com/blog/docker-tip-28-named-volumes-vs-path-based-volumes) in the next element.
 
                    The main difference between a named volume and a path based volume (as we used in our first element) is that Docker handles the question of *where* to create named volumes in your host filesystem.  If you just need the data to persist and don't care necessarily *where* it persists, use a named volume.  (You'll just need to include the named volume under the top level `volumes` key, which we'll do below)
 
                    Another difference between a named volume and a path based volume (and the aspect that allows access to the node_modules we installed in our image) is that named volumes are initialized when a container is created. If the container’s base image contains data at the specified mount point, that **existing data is copied into the new volume** upon volume initialization, which makes it available within the container. This does not apply when mounting a host directory.
 
-                - And so, in our next element, we'll mount a named volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.  
+                - And so, in our next element, we'll mount a named volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.
 
             - A **command** key that executes `npm run dev:hot` in the container.  You'll see in `package.json` that this starts your node server and webpack-dev-server.  The `proxy` settings in our `webpack.config.js` will route all traffic to the `api` route to the node server at port 3000.
 
     - Create a **volumes** dictionary where we'll create the named volume(s) we're mounting in our container(s)
 
-        - Create an empty **node_modules** key.  
+        - Create an empty **node_modules** key.
 
 1. Run the container using docker-compose
 
@@ -269,7 +269,7 @@ Okay, we've got a containerized environment with live reloading/HMR working for 
 
     Tag the image as mm-postgres so it will be easy to recognize and reference.  We'll tell it to look for the Dockerfile-postgres using the -f parameter
 
-    `docker build -t mm-postgres -f Dockerfile-postgres .`
+    `docker build -t [orgname]/mm-postgres -f Dockerfile-postgres .`
 
     Let's verify that the image has been created by listing the docker images on your machine.
 
@@ -290,7 +290,7 @@ Okay, we've got a containerized environment with live reloading/HMR working for 
             - POSTGRES_USER=mmadmin
             - POSTGRES_DB=mmdb
 
-        - A **volumes** key that contains an array.  
+        - A **volumes** key that contains an array.
 
             - In our single element here, we'll want to mount a named volume we'll call 'dev-db-volume' to the `/var/lib/postgresql/data` directory in the container.  This is where postgres stores the actual data files that make up your database.  This volume will persist the data between container starts and stops.
 
@@ -308,7 +308,7 @@ Okay, we've got a containerized environment with live reloading/HMR working for 
 
 ### Part 3 - Testing
 
-We know the value of testing.  Let's set up another docker-compose config that will spin up some test containers for us.  We'll also be able to use these when we incorporate automated Continuous Integration with Travis-CI later.  
+We know the value of testing.  Let's set up another docker-compose config that will spin up some test containers for us.  We'll also be able to use these when we incorporate automated Continuous Integration with Travis-CI later.
 
 1. Create a file called `docker-compose-test.yml`.  This file will look a lot like the one we created to run webpack-dev-server, with some important differences.
 
@@ -325,7 +325,7 @@ We know the value of testing.  Let's set up another docker-compose config that w
 
             - A **ports** key that contains an array.  We'll just have one value that will route requests from port 3000 on the host to port 3000 in the container.
 
-            - A **volumes** key that contains an array.  
+            - A **volumes** key that contains an array.
 
                 - In our first element, we'll want to mount our current directory to the `/usr/src/app` directory in the container.
 
@@ -346,7 +346,7 @@ We know the value of testing.  Let's set up another docker-compose config that w
               - POSTGRES_USER=mmadmin
               - POSTGRES_DB=mmdb
 
-            - Create a **volumes** key that contains an array.  
+            - Create a **volumes** key that contains an array.
 
               - In our single element here, we'll want to mount a named volume we'll call 'test-db-volume' to the `/var/lib/postgresql/data` directory in the container.  This is where postgres stores the actual data files that make up your database.  This volume will persist the data between container starts and stops.
 
@@ -359,7 +359,7 @@ We know the value of testing.  Let's set up another docker-compose config that w
 
 1. Let's run it and see if our tests pass!
 
-    `docker-compose -f docker-compose-test up`
+    `docker-compose -f docker-compose-test.yml up`
 
 ### Part 4 - Docker Hub
 
@@ -384,7 +384,7 @@ Once you have successfully containerized your application and **both** partners 
 
 1. ### Install a new dependency
 
-    So if we shouldn't run `npm install` in this repo, how do we add new dependencies to our project?  
+    So if we shouldn't run `npm install` in this repo, how do we add new dependencies to our project?
 
     Fair question.  What we'll need to do will depend on whether or not you know what version of the package you want.  If you know the version, simply update your package.json and skip to step 3.
 
@@ -406,7 +406,7 @@ Once you have successfully containerized your application and **both** partners 
 
         - Create a **ports** element that contains an array.  We'll just have one value that will route requests from port 8080 on the host to port 8080 in the container.
 
-            - Create a **volumes** element that contains an array.  
+            - Create a **volumes** element that contains an array.
 
                 - In our first element, we'll want to mount our current directory to the `/usr/src/app` directory in the container.  This will allow us to update our package.json with the current version of the package.
 
