@@ -41,7 +41,7 @@ As we create these files, we'll need two things from AWS:
     - Create a **script** key that contains an array of one element.  Here we'll want to use `docker-compose` to build our testing container that we configured with our `docker-compose-test.yml` file.  We'll also add a flag to tell Travis-CI to abort if we exit from the container.
 
         ```yaml
-        docker-compose -f docker-comp-test.yml up --abort-on-container-exit
+        docker-compose -f docker-compose-test.yml up --abort-on-container-exit
         ```
 
     That's all we need for Continuous Integration.  Now let's set up Continuous Deployment.
