@@ -141,7 +141,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
     Tag the image as mm-prod so it will be easy to recognize and reference.  By default, docker will look for a file named Dockerfile.  We'll take advantage of that later when we upload this repo to AWS.  Finally tell it to build in the current directory with `.`.
 
-    `docker build -t [orgname]/mm-prod -f .`
+    `docker build -t [orgname]/mm-prod .`
 
     We can verify that the image has been created by listing the docker images on your machine.
 
