@@ -24,7 +24,7 @@ describe('cardsReducer', () => {
     expect(result).toBe(startState);
   });
 
-  describe('ADD_CARD', () => {
+  describe('ADD_MARKET', () => {
     let action;
 
     beforeEach(() => {
