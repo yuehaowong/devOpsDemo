@@ -114,6 +114,8 @@ Of course, we can't do anything with the application yet.  We'll need to hook up
     - Give your dbinstance a meaningful name that indicates what database it will contain and which environment it's for. Set your Master username to `mmadmin`.
 
     - In typical production environments, you do not make your database publicly accessible.  They should only be accessible from our EC2 server.  We'll follow that rule here.
+    
+    - Under `Connectivity -> VPC Security group` be sure to select 'Create New' to create a new security group in your default VPC (Virtual Private Cloud).  Name it `mm-db-sg`.
 
     - Name your database `mmdb` and leave all other settings at their defaults.
 
@@ -124,10 +126,10 @@ Of course, we can't do anything with the application yet.  We'll need to hook up
 Once your database is up and running, we'll need to make sure that your EC2 instances can communicate with it.  To do that, we'll need to edit the settings for their respective security groups.
 
 1. #### Edit Security Group settings
-    - Head over to EC2 from the Services menu and select Security Groups.  Here you'll see all of the security groups set up in your VPC (Virtual Private Cloud).
+    - Head over to EC2 from the Services menu and select Security Groups.  Here you'll see all of the security groups set up in your VPC.
     - You should see the security group for your elastic beanstalk EC2 and the newly created security group for your RDS instance.  
     - First, tag your RDS security group with a 'Name' and set it to 'mm-db-prod-sg'.  You can also set your EC2 security group to 'mm-prod-sg'.  This will make them easier to identify in the future.
-    - Let's give the EC2 instance access by creating a new inbound rule for our 'mm-db-prod-sg' security group that allows postgres traffic from our 'mm-prod-sg' security group.  
+    - Let's give the EC2 instance access by creating a new inbound rule for our 'mm-db-prod-sg' security group that allows postgres traffic from our 'mm-prod-sg' security group.  (To do this, you'll need to get the id of the 'mm-prod-sg' group.) 
 
 ### Part 7 - Creating your database
 
