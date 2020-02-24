@@ -37,11 +37,19 @@ As we create these files, we'll need two things from AWS:
 1. #### Create `.travis.yml` in your repo's top level directory
 
     - Create a **services** key that contains an array.  The only element we'll add here is `docker`, so Travis will know that we'll need docker installed and running in the virtual machine that it spins up to test our code.
+    
+    - Create a **dist** key that contains a value `xenial`. This'll set our default build environment to Ubuntu Xenial.
 
-    - Create a **script** key that contains an array of one element.  Here we'll want to use `docker-compose` to build our testing container that we configured with our `docker-compose-test.yml` file.  We'll also add a flag to tell Travis-CI to abort if we exit from the container.
+    - Create a **script** key that contains an array of three elements.  Here we'll want to use `docker-compose` to build our testing container that we configured with our `docker-compose-test.yml` file.  We'll add a flag to tell Travis-CI to abort if we exit from the container.
 
         ```yaml
         docker-compose -f docker-compose-test.yml up --abort-on-container-exit
+        ```
+    - When we run our script, we dictate what version of python and pip (python's package management system) to use. The -v flags here will print all lines in the script before executing them, which helps identify which steps failed in the case of us hitting a snag in our deployment. The second and third elements in our **script** array will look like so:
+    
+        ```yaml
+        python3 -VV
+        pip -V
         ```
 
     That's all we need for Continuous Integration.  Now let's set up Continuous Deployment.
@@ -50,11 +58,16 @@ As we create these files, we'll need two things from AWS:
 
         ```yaml
         # install the aws cli
-        - pip install --user awscli
+        - python3 -m pip install --user awscli
         # install the elastic beanstalk cli
-        - pip install --user awsebcli
+        - python3 -m pip install --user awsebcli
         # Append exe location to our PATH
         - export PATH=$PATH:$HOME/.local/bin
+        ```
+    - Create an **env** key, who's value will be another key **global**. The value of this key will be the following path:
+    
+        ```yaml
+        - PATH=/opt/python/3.7.1/bin:$PATH
         ```
 
     - Create a **deploy** key that will contain an array.  Each element will instruct travis on where (and how) to deploy our code to AWS.
