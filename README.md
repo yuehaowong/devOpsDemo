@@ -1,7 +1,7 @@
 # DevOps
 In this unit, you'll be deploying a containerized version of an existing full stack React/Redux application configured with live reloading/HMR and a separate node api server to AWS using Travis-CI for continuous integration and deployment.  This will be a fair bit of work to set up initially, but once that's done, the impact on developer workflow is nominal and the benefits are well worth it.
 
-![](http://g.recordit.co/Vhn9xprpuF.gif)
+![](./docs/assets/images/docker-github-aws-diagram.gif)
 
 Setup for this unit will be a little different than what you're used to.  In order clearly show the advantages of containerized applications, we want to share the same codebase.  
 
