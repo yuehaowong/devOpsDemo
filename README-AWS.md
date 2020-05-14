@@ -61,14 +61,17 @@ Great, we have an AWS account!  Let's use it.  We'll start by creating a new app
     - Note that you'll have to set an environment name.  The default value is something like `megamarkets-env`.  You'll want to change that to something the easily identifies this as the production environment for the megamarkets application.
 
     - We're going to deploy a containerized application, so select Docker as your preconfigured platform.
+    - For the current configuation of our Docker containerization, you'll want to change your **Platform Branch** to:
+      - `Docker running on 64bit Amazon Linux`
 
     - In order to deploy your initial code, you'll need to zip it up into an archive file.  We can use git to do this.
 
-         `git archive -v -o myMM.zip --format=zip HEAD`
+      -  `git archive -v -o myMM.zip --format=zip HEAD`
 
     - Select `Create Environment` and wait for a few minutes while AWS creates an S3 bucket, sets up security groups and spins up your EC2 instance complete with our application running in a docker container.
 
     - Once this is complete, open the Dashboard for your new environment and follow the URL at the top to see your application running in the cloud.
+
 
 ### Part 4 - Getting CLI Access your EC2 instance
 
