@@ -70,7 +70,7 @@ As we create these files, we'll need two things from AWS:
         - PATH=/opt/python/3.7.1/bin:$PATH
         ```
 
-    - Create a **deploy** key that will contain an array.  Each element will instruct travis on where (and how) to deploy our code to AWS.
+    - Create a **deploy** key.  Each element will instruct travis on where (and how) to deploy our code to AWS.
 
         There are different ways to accomplish this using S3 or Elastic Beanstalk.  Since we are doing a slightly more sophisticated deployment that includes Docker containers, we'll be using a bash script to do the heavy lifting.  This section will simply invoke the bash script.
 
@@ -80,7 +80,7 @@ As we create these files, we'll need two things from AWS:
 
         - A **skip_cleanup** key with a value of `true`.  This tells Travis-CI not to clear out of the files it built after it runs the test, as we may be using some of those assets.
 
-        - An **on** key with a value of `master`.  This tells Travis-CI that we only want to run this script on merges to the master branch.
+        - An **on** key that has a key value pair of branch: master.  This tells Travis-CI that we only want to run this script on merges to the master branch.
 
         - A **script** key that tells Travis-CI to run our bash script from Travis-CI's build directory ($TRAVIS_CI_BUILD, which is supplied by Travis-CI):
 
