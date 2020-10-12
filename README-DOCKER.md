@@ -47,7 +47,7 @@ This would mount the current directory: `./` to `/usr/src/app` in the container.
 
     - Each pair partner should go to [docker.com](http://docker.com/), then download and install Docker for your OS. (You'll be required to create a docker account to do this.  Remember your dockerId, you'll use it in the next step)
 
-1. Create a Docker Hub account
+2. Create a Docker Hub account
 
     We have a way to collaboratively share code with Github.  Docker Hub gives us a way to collaboratively share images.
 
@@ -137,7 +137,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
     - Create an [ENTRYPOINT](https://www.devopsnipp.com/forum/devops-tools/docker-entrypoint-cmd-dockerfile-best-practices) where you'll run `node ./server/server.js`
 
-1. Build the docker image from Dockerfile
+2. Build the docker image from Dockerfile
 
     Tag the image as mm-prod so it will be easy to recognize and reference.  By default, docker will look for a file named Dockerfile.  We'll take advantage of that later when we upload this repo to AWS.  Finally tell it to build in the current directory with `.`.
 
@@ -147,7 +147,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
     `docker images`
 
-1. Create the container by running the image
+3. Create the container by running the image
 
     We'll open port 3001 on our localhost and point to port 3000 in the container.  (These could be the same value, we're just differentiating for clarity here)
 
@@ -195,7 +195,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
     - EXPOSE your server port
 
-1. Build the docker image from Dockerfile-dev
+2. Build the docker image from Dockerfile-dev
 
     Tag the image as mm-dev so it will be easy to recognize and reference.  This time, we'll tell docker to use our Dockerfile-dev file using the -f parameter
 
@@ -205,7 +205,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
     `docker images`
 
-1. Create the container using docker-compose
+3. Create the container using docker-compose
 
     This time, instead of running the image to create the container using the command line, we're going to make use of the docker-compose utility to run multiple containers (one for node_modules and another for our dev database).
 
@@ -213,7 +213,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
     The file format for this configuration file will be [yaml](https://rollout.io/blog/yaml-tutorial-everything-you-need-get-started/), which stands for 'YAML Ain't Markup Language'.  It's useful as a simple human-readable structured data format. Yaml format is used a lot in the industry for configuration files.
 
-1. Create a file in the top level directory called `docker-compose-dev-hot.yml` that implements the following
+4. Create a file in the top level directory called `docker-compose-dev-hot.yml` that implements the following
 
     - Set the docker-compose **version** to 3
 
@@ -247,7 +247,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
         - Create an empty **node_modules** key.
 
-1. Run the container using docker-compose
+5. Run the container using docker-compose
 
     `docker-compose -f docker-compose-dev-hot.yml up`
 
@@ -265,7 +265,7 @@ Okay, we've got a containerized environment with live reloading/HMR working for 
 
     - COPY the sql script from `./scripts/db_init.sql` to `/docker-entrypoint-initdb.d/` in the container.  Whenever the container spins up, scripts in that directory get executed automatically.  This will create and populate our database in the container.
 
-1. Build the docker image from Dockerfile-postgres
+2. Build the docker image from Dockerfile-postgres
 
     Tag the image as mm-postgres so it will be easy to recognize and reference.  We'll tell it to look for the Dockerfile-postgres using the -f parameter
 
@@ -275,7 +275,7 @@ Okay, we've got a containerized environment with live reloading/HMR working for 
 
     `docker images`
 
-1. Edit `docker-compose-dev-hot.yml` to add our postgres container configuration
+3. Edit `docker-compose-dev-hot.yml` to add our postgres container configuration
 
     - Create a **postgres-db** dictionary as the second key in the **services** dictionary
 
@@ -298,11 +298,11 @@ Okay, we've got a containerized environment with live reloading/HMR working for 
 
     - We only want our **dev** service to start _after_ our **postgres-db** service has started.  We can do that by adding a **depends_on** array to our **dev** dictionary and set the first element to **postgres-db**
 
-1. Finally, we just need to let our application know that we want to use our development database hosted in the container rather than the production database.  Look at the ./server/models/mmModel.js file to see how we're doing this by using an environment variable called NODE_ENV.
+4. Finally, we just need to let our application know that we want to use our development database hosted in the container rather than the production database.  Look at the ./server/models/mmModel.js file to see how we're doing this by using an environment variable called NODE_ENV.
 
-    - In order to pass that environment variable to our server, we can update the 'dev:hot' script in package.json to pass that key with the value 'development'.  Now we'll point to the containerized database.
+    - In order to pass that environment variable to our server, we can update the 'dev:hot' script in package.json to pass that key (NODE_ENV) with the value 'development'.  Now we'll point to the containerized database.
 
-1. Make your life even easier by using npm scripts
+5. Make your life even easier by using npm scripts
 
     It's good to know the docker-compose command to start up your containers, but once you know how to do it, it's nice to make it simple to kick off by adding it as a command in your script object in package.json.  You can see where this has already been added as 'docker-dev:hot'
 
@@ -357,7 +357,7 @@ We know the value of testing.  Let's set up another docker-compose config that w
         - Create an empty **node_modules** key.
         - Create an empty **test-db-volume** key.
 
-1. Let's run it and see if our tests pass!
+2. Let's run it and see if our tests pass!
 
     `docker-compose -f docker-compose-test.yml up`
 
@@ -369,11 +369,11 @@ We know the value of testing.  Let's set up another docker-compose config that w
     - `docker push [orgname]/mm-dev`
     - `docker push [orgname]/mm-prod`
 
-1. Check your organization page in Docker Hub to verify that your images are there
+2. Check your organization page in Docker Hub to verify that your images are there
 
-1. Push your feature branch up to your forked repo in github, create a Pull Request to your master branch, then merge that request.
+3. Push your feature branch up to your forked repo in github, create a Pull Request to your master branch, then merge that request.
 
-1. And now for the final test!  Have your partner clone your forked repo to their local machine and run
+4. And now for the final test!  Have your partner clone your forked repo to their local machine and run
     - `npm run docker-dev:hot`
 
 ## On to AWS
@@ -390,41 +390,41 @@ Once you have successfully containerized your application and **both** partners 
 
     1. Create a file in your top level repo directory called `docker-compose.yml`.  This is the docker-compose default configuration file.
 
-    - Set the docker-compose **version** to 3
+        - Set the docker-compose **version** to 3
 
-    - Create a **volumes** dictionary where we'll create the named volume(s) we're mounting in our container(s)
+        - Create a **volumes** dictionary where we'll create the named volume(s) we're mounting in our container(s)
 
-      - Create an empty **node_modules** key.
+          - Create an empty **node_modules** key.
 
-    - Create a **services** dictionary
+      - Create a **services** dictionary
 
-        - Under **services**, create a **bash** dictionary, so when we run `docker-compose bash`, it will know to look here.  We'll add other services later when we incorporate CI/CD.  For now, the rest of this goes under the **bash** dictionary.
+          - Under **services**, create a **bash** dictionary, so when we run `docker-compose bash`, it will know to look here.  We'll add other services later when we incorporate CI/CD.  For now, the rest of this goes under the **bash** dictionary.
 
-        - Create an **image** element pointing to your [orgname]/mm-dev image
+          - Create an **image** element pointing to your [orgname]/mm-dev image
 
-        - Create a **container_name** element set to something meaningful like 'mm-dev'
+          - Create a **container_name** element set to something meaningful like 'mm-dev'
 
-        - Create a **ports** element that contains an array.  We'll just have one value that will route requests from port 8080 on the host to port 8080 in the container.
+          - Create a **ports** element that contains an array.  We'll just have one value that will route requests from port 8080 on the host to port 8080 in the container.
 
             - Create a **volumes** element that contains an array.
 
-                - In our first element, we'll want to mount our current directory to the `/usr/src/app` directory in the container.  This will allow us to update our package.json with the current version of the package.
+              - In our first element, we'll want to mount our current directory to the `/usr/src/app` directory in the container.  This will allow us to update our package.json with the current version of the package.
 
-                - In our next element, we'll mount a named volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.
+              - In our next element, we'll mount a named volume we'll simply call 'node_modules' to `/usr/src/app/node_modules` in the container.
 
-    1. We can now run this container and install the new dependency using
+    2. We can now run this container and install the new dependency using
 
         `docker-compose run --rm --service-ports bash npm install --save (or --save-dev) [package-name]`
 
-    1. Remove the current mm-dev image
+    3. Remove the current mm-dev image
 
         `docker image rm [orgname]/mm-dev --force`
 
-    1. Build a new image with your updated package.json
+    4. Build a new image with your updated package.json
 
         `docker build -t [orgname]/mm-dev -f Dockerfile-dev .`
 
-    1. Now we can push our new image with the updated dependencies to Docker hub.
+    5. Now we can push our new image with the updated dependencies to Docker hub.
 
         `docker push [orgname]/mm-dev`
 
