@@ -3,17 +3,17 @@ In this unit, you'll be deploying a containerized version of an existing full st
 
 ![](./docs/assets/images/docker-github-aws-diagram.gif)
 
-Setup for this unit will be a little different than what you're used to.  In order clearly show the advantages of containerized applications, we want to share the same codebase.  
+The setup for this unit will be a little different than what you're used to. In order to clearly show the advantages of containerized applications, we want to share the same codebase.  
 
-So you'll only fork this repo to one partner's account.  After you've forked it, go to your forked version and find the 'Settings' tab at the top of the repo.  Select that and then select 'Collaborators and Teams'. Scroll down to the bottom and add the other partner as a Collaborator by entering their github name and setting their access to 'write'.  
+So you'll only fork this repo to one partner's account. After you've forked it, go to your forked version and find the 'Settings' tab at the top of the repo.  Select that and then select 'Collaborators and Teams'. Scroll down to the bottom and add the other partner as a Collaborator by entering their github name and setting their access to 'write'.  
 
 ### Verify Megamarkets App
 
 Before we get started, let's just make sure that the application loads with live updates/HMR without any kind of containerization.  We won't have full functionality, as we don't have a database hooked up yet, but don't worry, we will!
 
 1. Clone this repo
-1. Run `npm install`
-1. Run `npm run dev:hot`
+2. Run `npm install`
+3. Run `npm run dev:hot`
 
 That should open up a browser window with the MegaMarkets app all set for further development.  To verify that it's working, hop over to client/styles.css and change the color of the text to something exciting.  You should see your change immediately reflected in the browser.  Yes?  Good.  No?  Send a help desk :smiley:
 
