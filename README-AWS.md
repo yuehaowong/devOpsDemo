@@ -96,7 +96,7 @@ Yep!  SSH allows us to use a **key pair** where the server has a public key and 
     - Now go over to the Elastic Beanstalk service and open the dashboard for your production environment.
     - Select Configuration -> Security and set your mm-ec2-key up as the EC2 key pair and wait for the environment to update. Updating the environment will most likely prompt AWS to create a new EC2 instance to reflect this security change, so ensure to reference the new EC2 instance for the following steps.
     - Now we can login to our instance from the command line by invoking ssh, providing the private key, and logging in as `ec2-user` (which is the default for new EC2 instances)
-        - `ssh -i ~/.ssh/mm-ec2-key.pem ec2-user@your-ec2-public-dns`. To find your EC2 Public IPv4 DNS, go to Services --> EC2 --> Instances, click on your running EC2 instance and in the instance summary, you should find the Public IPv4 DNS for the EC2 instance.
+        - `ssh -i ~/.ssh/mm-ec2-key.pem ec2-user@your-ec2-public-dns`. To find your EC2 Public IPv4 DNS, go to Services -> EC2 -> Instances, click on your running EC2 instance and in the instance summary, you should find the Public IPv4 DNS for the EC2 instance.
         - 1st NOTE: When running the above command, if the ssh network request times out, ensure that you are providing the correct Public DNS for you EC2 Instance. 
         - 2nd NOTE: After running the command, if you are given the following prompt: "Are you sure you want to continue connecting (yes/no/[fingerprint])?" Simply copy and paste the ECDSA key fingerprint given to you in the terminal, and hit Enter.
     - To see your code
