@@ -57,8 +57,6 @@ This would mount the current directory: `./` to `/usr/src/app` in the container.
 
     - Add your partner to the **owners** team by entering their dockerID
 
-    - Make sure that each partner's docker daemon is pointing to your organization by right clicking the 'Docker' icon on your machine and selecting your dockerID -> and then your organization
-
 Okay, setup complete! On to the...
 
 ## Challenges
