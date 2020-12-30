@@ -21,6 +21,7 @@ If you don't have a Travis account already, head over to the [Travis-CI](https:/
     - Also note that there is a place here to set up environment variables.  In order for Travis-CI to have access to your AWS account, you'll need your IAM credentials.
         - Create an environment variable named 'AWS_ACCESS_KEY_ID' and set it as per your IAM credentials
         - Create an environment variable named 'AWS_SECRET_ACCESS_KEY' and set it as per your IAM credentials
+     - Lastly, still in settings, click on 'Plan' and ensure you choose and confirm the Free plan. Without confirming the free plan your build won't start!
 
 ### Part 2 - Configure the repo for Travis
 
