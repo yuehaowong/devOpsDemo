@@ -20,7 +20,7 @@
 
 ### Part 2 - IAM
 
-You are currently signed in with your root account.  This account should only be used for billing purposes and setting up your admin group.
+You are currently signed in with your root account.  This account should only be used for billing purposes and setting up your admin group. Search for IAM in services.
 
 1. #### Create an admin group
 
@@ -35,12 +35,14 @@ You are currently signed in with your root account.  This account should only be
     - Add both users to the `admin` group.
 
     - Once you've added both users, you will see a 'success' screen where you'll have the opportunity to download a .csv containing the Access Key ID and Secret Access Key for both.  
+    
+    - Apply an IAMUserChangePassword to create rules for IAM user passwords.
+
 
         **DOWNLOAD THIS FILE!!**  
 
         This will be the **only** opportunity to get your Secret Access Key. Make sure each partner makes note of their Access Key Id and Secret Access Key.
 
-    - Apply an IAM Password Policy to create rules for IAM user passwords.
 
 3. #### Sign in with your new admin user account
 
@@ -67,6 +69,7 @@ Great, we have an AWS account!  Let's use it.  We'll start by creating a new app
 
       -  `git archive -v -o myMM.zip --format=zip HEAD`
 
+    - Upload this zipped file.
     - Along with your application, Elastic Beanstalk will automatically generate an environment for you. An *environment* is a collection of AWS resources running an application version. Wait a few minutes while AWS creates an S3 bucket, sets up security groups and spins up your EC2 instance complete with your application running in a docker container.
 
     - Note that upon creating your first application, the default environment name will be something like "[APPLICATION_NAME]-env". For our purposes, this will suffice, however in practice, it's best to name your environments descriptively to something that easily identifies this as the production environment for the megamarkets application. 
@@ -92,12 +95,12 @@ Yep!  SSH allows us to use a **key pair** where the server has a public key and 
     - This will create the public key and download a .pem file to your local machine.  You will want to take this file and place it in your ~/.ssh directory (create this if you don't have one already)
     - Private keys must have tight [file level security](https://www.linux.org/threads/file-permissions-chmod.4124/), so we'll change that using the linux command to 'change mode' on the file
         - `chmod 400 ~/.ssh/mm-ec2-key.pem`
-    - Now let's go set up the public key on our EC2 instance.  You'll need to save the Public IPv4 DNS for your EC2 instance for logging in. You can find that under EC2 -> Instances.
+    - Now let's go set up the public key on our EC2 instance.  You'll need to save the Public IPv4 address for your EC2 instance for logging in. You can find that under EC2 -> Instances.
     - Now go over to the Elastic Beanstalk service and open the dashboard for your production environment.
     - Select Configuration -> Security and set your mm-ec2-key up as the EC2 key pair and wait for the environment to update. Updating the environment will most likely prompt AWS to create a new EC2 instance to reflect this security change, so ensure to reference the new EC2 instance for the following steps.
     - Now we can login to our instance from the command line by invoking ssh, providing the private key, and logging in as `ec2-user` (which is the default for new EC2 instances)
-        - `ssh -i ~/.ssh/mm-ec2-key.pem ec2-user@your-ec2-public-dns`. To find your EC2 Public IPv4 DNS, go to Services -> EC2 -> Instances, click on your running EC2 instance and in the instance summary, you should find the Public IPv4 DNS for the EC2 instance.
-        - 1st NOTE: When running the above command, if the ssh network request times out, ensure that you are providing the correct Public DNS for you EC2 Instance. 
+        - `ssh -i ~/.ssh/mm-ec2-key.pem ec2-user@your-ec2-public-address`. To find your EC2 Public IPv4 address, go to Services -> EC2 -> Instances, click on your running EC2 instance and in the instance summary, you should find the Public IPv4 address for the EC2 instance.
+        - 1st NOTE: When running the above command, if the ssh network request times out, ensure that you are providing the correct Public address for you EC2 Instance. 
         - 2nd NOTE: After running the command, if you are given the following prompt: "Are you sure you want to continue connecting (yes/no/[fingerprint])?" Simply copy and paste the ECDSA key fingerprint given to you in the terminal, and hit Enter.
     - To see your code
         - `cd /var/app/current/`
@@ -119,7 +122,7 @@ Of course, we can't do anything with the application yet.  We'll need to hook up
 
     - Under Settings, first provide your DB instance with a meaningful name, `mmdb-prod-instance-1`, that indicates what database it will contain and which environment it is for. Second, set the  "Master username" to `mmadmin`. Remember the password that you provide here, as you'll need it when accessing your database from your EC2 instance.
 
-    - Keep the defaults for DB instance size (instance class should be db.t2.micro), Storage type (General Purpose SSD), and Allocated storage (20Gb). Additionally, **Uncheck** "Enable storage autoscaling". This is to ensure that we stay in the free tier. Note that you *could* set up a replica of your database in a separate Availability Zone here (but that could incur a charge).
+    -  Check 'Include previous generation classes'. Keep the defaults for DB instance size (instance class should be db.t2.micro), Storage type (General Purpose SSD), and Allocated storage (20Gb). Additionally, **Uncheck** "Enable storage autoscaling". This is to ensure that we stay in the free tier. Note that you *could* set up a replica of your database in a separate Availability Zone here (but that could incur a charge).
 
     - Under "Connectivity", expand the "Additional connectivity configuration" tab to configure more options regarding your RDS securtiy group. In typical production environments, you do not make your database publicly accessible.  They should only be accessible from our EC2 server. We'll follow that rule here.
         - Under "VPC security group", select "Create new" and give the VPC Security group the name `mm-db-sg`. Then select the availability zone closest to you. Leave the Database port as the default for PostgresQL databases (`5432`).
