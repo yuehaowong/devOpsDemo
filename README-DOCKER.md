@@ -47,7 +47,7 @@ This would mount the current directory: `./` to `/usr/src/app` in the container.
 
    - Each pair partner should go to [docker.com](http://docker.com/), then download and install Docker for your OS. (You'll be required to create a docker account to do this. Remember your dockerId, you'll use it in the next step)
 
-   - WSL Users: Follow this [link](https://github.com/CodesmithLLC/unit-13-devops/blob/master/README-WSL.md)
+   - Native Windows and WSL Users: Follow this [link](https://github.com/CodesmithLLC/unit-13-devops/blob/master/README-WSL.md)
 
 2. Create a Docker Hub account
 
