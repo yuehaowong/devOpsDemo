@@ -23,6 +23,7 @@ _Note:_ The following instructions are adapted from the [official Docker documen
 5. Click **Apply & Restart**.
 
 6. When Docker Desktop restarts, go to **Settings** > **Resources** > **WSL Integration**. The Docker-WSL integration will be enabled on your default WSL distribution.
+
    ![wsl2-choose-distro](https://github.com/CodesmithLLC/precourse-part-1/blob/master/docs/assets/images/wsl2-choose-distro.png)
 
 7. Click **Apply & Restart**.
