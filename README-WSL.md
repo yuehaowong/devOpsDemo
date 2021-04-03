@@ -14,7 +14,7 @@ _Note:_ The following instructions are adapted from the [official Docker documen
 
 3. From the Docker menu, select **Settings** > **General**.
 
-   ![use-wsl2-based-engine](https://github.com/CodesmithLLC/precourse-part-1/blob/master/docs/assets/images/wsl-enable.png)
+   ![use-wsl2-based-engine](https://github.com/CodesmithLLC/unit-13-devops/blob/master/docs/assets/images/wsl-enable.png)
 
 4. Select the **Use WSL 2 based engine** check box.
 
@@ -24,7 +24,7 @@ _Note:_ The following instructions are adapted from the [official Docker documen
 
 6. When Docker Desktop restarts, go to **Settings** > **Resources** > **WSL Integration**. The Docker-WSL integration will be enabled on your default WSL distribution.
 
-   ![wsl2-choose-distro](https://github.com/CodesmithLLC/precourse-part-1/blob/master/docs/assets/images/wsl2-choose-distro.png)
+   ![wsl2-choose-distro](https://github.com/CodesmithLLC/unit-13-devops/blob/master/docs/assets/images/wsl2-choose-distro.png)
 
 7. Click **Apply & Restart**.
 
