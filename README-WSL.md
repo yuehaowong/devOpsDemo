@@ -28,7 +28,7 @@ _Note:_ The following instructions are adapted from the [official Docker documen
 
 7. Click **Apply & Restart**.
 
-## You likely will need to reclone this repo!
+## You will need to reclone this repo!
 
 Before you continue on with this unit, you will need to reclone this repo into WSL. WSL manages it's own file system separately and has signigicant fundamental differences from Windows. Docker relies on a Linux environment and makes certain assumptions wherever it is run.
 
