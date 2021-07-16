@@ -199,6 +199,8 @@ We're nearly done!  Now all we have to do is give our application all of the inf
 
 1. Don't get carried away with that, though.  We've got one more thing to implement: [CI/CD](https://github.com/CodesmithLLC/unit-13-devops/blob/master/README-TRAVIS.md)
 
+1. Don't forget to tear down your AWS application when the unit is over!  Instructions are at the bottom of this ReadMe.
+
 ## Extensions
 
 1. ### Set up AWS and EB CLI
@@ -239,3 +241,45 @@ We're nearly done!  Now all we have to do is give our application all of the inf
             - If you've created a load balancer, you'll point your A record at the load balancer.
             - If you have a single instance, you'll point your A record at the Elastic Beanstalk environment
     1. You can check DNS propogation through sites like [dnschecker.org](https://dnschecker.org)
+
+## Tear down your AWS application
+
+1. ### Log in as your IAM User
+    Not sure what your IAM user account number is?  Sign in as the root user for your account using your email address, and navigate to the 'Users' page from your IAM dashboard.  Select your IAM administrator name and not the number inside of your User ARN.  This is your IAM account number.
+
+1. ### Tear down Elastic Container Registry (ECR)
+    Head on over to Services => Elastic Container Registry.  You will immediately be presented with your ECR repositories.  Select your repository entitled ‘mm’ and click the delete button above.  You will be required to confirm deletion in this step and most other steps in this process.  Be sure to check both your Private and Public tabs and confirm both are empty.
+
+1. ### Tear down your database (RDS)
+    Now we can navigate to Services => RDS => Databases and see our RDS instance running.  Select your ‘mmdb-prod-instance-1’ db and select Actions => Delete.  This is going to take a few moments to complete.  During this tear-down process, please wait for deletion to complete at every step.  If you attempt to tear down multiple services at once, you may run into conflicts that will prevent thorough deletion.  Patience is your friend.
+
+1. ### Terminate Elastic Compute Cloud (EC2) instances
+    Next up, go to Services => EC2 => Instances and you can see your Elastic Compute Cloud instance running.  If you select your EC2 instance, click Instance State => Terminate Instance, it may give you a notice that your instance is attached to an EC2 auto-scaling group.  In this case, at the bottom of the left sidebar, click Auto-Scaling Groups, select your group(s), click Delete, and wait for completion.
+
+    Go back to Instances and confirm that your instance displays as 'Terminated'.  If you navigate to your EC2 dashboard, you can also click ‘Load Balancers’ and delete your load balancers.
+
+    Again from your dashboard, click ‘Key Pairs’ and delete any key pairs you have.  Lastly, click ‘Security Groups’ and delete all of your security groups for any EC2 instances.  You will have to delete them one at a time, as they are dependent upon each other.  You should be able to successfully delete all but the default security group.
+
+1. ### Chop down your Elastic Beanstalk
+    Navigate to Services => Elastic Beanstalk => Applications, select your megamarkets application, then click Actions => Delete Application.  You’ll be shown a notification that indicates that the corresponding environment will be terminated upon deletion of the application.  Go ahead and confirm deletion.
+
+    Navigate to your Environments page and you should see the health of your environment change from red to grey.  The environment is now in the process of being torn down.  Clicking on the environment, you will see a grey spinner.  This is going to take a while, so go grab a snack and wait for your environment to turn down.  When the environment has been successfully terminated, the environment name will display with the (terminated) tag.
+
+1. ### Empty and delete your Simple Storage Systems (S3) bucket
+    We’re almost done!  Let’s navigate to Services => S3 to view your storage buckets!  Buckets are containers that store your data in S3.  Go ahead and select your S3 bucket and click Empty.  You cannot delete the bucket until it has been emptied. Upon a successful empty, you will see a green Success banner pop up at the top of your page.
+
+    Now we have to actually delete the bucket itself.  Click Exit to go back to your Buckets page and select your now empty bucket.  You’ll notice that if you select your bucket, click and confirm Delete, you’ll get an authentication error.  Don’t panic.  You just need to delete the bucket policy.  Go back to your Buckets page and click the name of your bucket.  In the Permissions tab, you will see Bucket Policy.  Click Delete.  You’ll see another green Success banner at the top of the page.
+
+    NOW, go back to your Buckets page and try deleting the bucket again.  Should work out real nice for ya.  If not, then you are most definitely experiencing an IAM policy issue, and the error message that appears will point you in the right direction to change your s3:deleteBucket policy from ‘Deny’ to ‘Allow’.
+
+1. ### Topple your CloudFormation stacks
+    This step is mostly for verification that your terminations/deletions have been successful.  Go to Services => CloudFormation and ensure you have no stacks on your dashboard.  No stacks here?  Great.  Go to the next step.
+    
+    If you have a stack on your dashboard, that indicates that there was an issue terminating your Elastic Beanstalk application or environment.  Go back to your Elastic Beanstalk console and try terminating again.  While Elastic Beanstalk is working on terminating your environment, your CloudFormation stack should display DELETE-IN-PROGRESS as its status.
+
+    Go get another snack and wait for your environment to shut down… Again…  You might need to refresh the page to make sure your event logs are updated.  Sometimes it stalls out, so don’t be alarmed.
+
+1. ### Check your billing information
+    Log out of your IAM user account and log back in as your AWS root user.  Go ahead and navigate to Services => Billing to see your Billing & Cost Management Dashboard.  If you get an alert email from AWS at any point after completing the above steps, you should probably try looking here first.  You will be able to see how many requests you’re handling per service, and if anything is approaching the limit, you are probably still running something on that AWS service.
+
+    If you are experiencing any issues that are not addressed in this section, feel free to browse the AWS forums for troubleshooting tips or reach out to AWS support directly.
