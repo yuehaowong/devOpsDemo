@@ -46,10 +46,11 @@ As we create these files, we'll need two things from AWS:
         ```yaml
         docker-compose -f docker-compose-test.yml up --abort-on-container-exit
         ```
-    - When we run our script, we dictate what version of python and pip (python's package management system) to use. The -v flags here will print all lines in the script before executing them, which helps identify which steps failed in the case of us hitting a snag in our deployment. The second and third elements in our **script** array will look like so:
+    - When we run our script, we dictate what version of python and pip (python's package management system) to use. You'll want to make sure that pip is upgraded, as the AWS EB CLI requires a version of pip that's already preinstalled. The -v flags here will print all lines in the script before executing them, which helps identify which steps failed in the case of us hitting a snag in our deployment. The second and third elements in our **script** array will look like so:
     
         ```yaml
         python3 -VV
+        pip install --upgrade pip
         pip -V
         ```
 
