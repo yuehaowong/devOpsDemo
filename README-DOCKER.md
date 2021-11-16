@@ -123,7 +123,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
 1. Let's start by creating our production Dockerfile. Create a file in the top level directory and name it `Dockerfile` that implements the following
 
-   - Start FROM a baseline image of node v10.1
+   - Start FROM a baseline image of node v16.13
 
    - Set up a WORKDIR for application in the container and set it to `/usr/src/app`.
 
@@ -183,7 +183,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
 1. Create a file in the top level directory called `Dockerfile-dev` that implements the following
 
-   - Start FROM a baseline image of node v10.15
+   - Start FROM a baseline image of node v16.13
 
    - RUN a command to npm install webpack globally in the container
 
