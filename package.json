@@ -28,7 +28,7 @@
     "babel-loader": "^8.0.4",
     "css-loader": "^6.5.1",
     "html-webpack-plugin": "^5.5.0",
-    "jest": "^24.1.0",
+    "jest": "^27.3.1",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.9",
     "react-hot-loader": "^4.6.3",
