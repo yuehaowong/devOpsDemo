@@ -55,7 +55,8 @@ This would mount the current directory: `./` to `/usr/src/app` in the container.
 
    - One of you head over to [Docker Hub](https://hub.docker.com) and create an account with the dockerID that you used when you installed Docker.
 
-   - Create an organization. The name will need to be unique across all of Docker Hub, so this may take a couple of attempts. You'll use this name as you go through the challenge anywhere you see `[orgname]`
+   - Create an organization. The name will need to be unique across all of Docker Hub, so this may take a couple of attempts. You'll use this name as you go through the challenge anywhere you see `[orgname]`. 
+      - You will be asked to select a plan for your new organization. Choose the ‘buy now’ option on the Team plan and disregard the pricing info, we will be bypassing this to create a free version. When asked to set up your organization’s size, use the default settings and continue to the payment section. At this point you will be asked to enter your payment info. To bypass this, click the ‘Organizations’ tab on the top navbar to redirect to your newly created free organization.
 
    - Add your partner to the **owners** team by entering their dockerID
 
