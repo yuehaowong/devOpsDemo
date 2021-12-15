@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "buffer-shims": "^1.0.0",
-    "pg": "^7.7.1",
+    "pg": "^8.7.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",

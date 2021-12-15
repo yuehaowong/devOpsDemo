@@ -262,7 +262,7 @@ Okay, we've got a containerized environment with live reloading/HMR working for 
 
 1. Create a file in the top level directory called `Dockerfile-postgres` that implements the following
 
-   - Start FROM a baseline image of postgres v9.6.8
+   - Start FROM a baseline image of postgres v13.4
 
    - COPY the sql script from `./scripts/db_init.sql` to `/docker-entrypoint-initdb.d/` in the container. Whenever the container spins up, scripts in that directory get executed automatically. This will create and populate our database in the container.
 
