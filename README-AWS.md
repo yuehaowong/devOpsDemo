@@ -118,7 +118,7 @@ Of course, we can't do anything with the application yet.  We'll need to hook up
 
     - Click "Create Database" to begin the process of generating a AWS hosted database  
     
-    - For the database creation method select "Standard Create", for engine type select "PostgreSQL" (v9.13.4-R1 for consistency with our Docker Image), and for Templates select "Free Tier". 
+    - For the database creation method select "Standard Create", for engine type select "PostgreSQL" (v13.4-R1 for consistency with our Docker Image), and for Templates select "Free Tier". 
 
     - Under Settings, first provide your DB instance with a meaningful name, `mmdb-prod-instance-1`, that indicates what database it will contain and which environment it is for. Second, set the  "Master username" to `mmadmin`. Remember the password that you provide here, as you'll need it when accessing your database from your EC2 instance.
 
