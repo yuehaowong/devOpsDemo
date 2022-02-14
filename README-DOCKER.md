@@ -391,6 +391,14 @@ Go to your organization page on DockerHub and open one of your image repositorie
 
 Luckily, there's a solution: we can use a plugin called [Docker Buildx](https://docs.docker.com/buildx/working-with-buildx/) to build images for multiple platforms.
 
+First, we'll want to create a new builder instance, which will provide an isolated, scoped environment for our build. We can do this using the `create` command:
+
+`docker buildx create --name mm-builder`
+
+We can then specify that we want to use our `mm-builder` instance with the `use` command.
+
+`docker buildx use mm-builder`
+
 To build images with Buildx, use the `docker buildx build` command. You'll need to include the `--platform` option to specify which architectures to build images for, and the `--push` option to push your images to Docker Hub. Let's first try rebuilding your `mm-prod` image with Buildx:
 
 ```
