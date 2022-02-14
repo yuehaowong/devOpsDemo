@@ -148,7 +148,6 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
    `docker images` 
 
-
 3. Create the container by running the image
 
    We'll open port 3001 on our localhost and point to port 3000 in the container. (These could be the same value, we're just differentiating for clarity here)
