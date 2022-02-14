@@ -41,6 +41,8 @@ As we create these files, we'll need two things from AWS:
     
     - Create a **dist** key that contains a value `xenial`. This'll set our default build environment to Ubuntu Xenial.
 
+    - The **arch** key specifies which CPU architecture your code will be running on. This setting defaults to a value of `amd64`, so if you're working on an Intel machine, it isn't necessary to include for purposes of this unit. **If you are using an M1 Mac**, however, you will want to include this key and set it to `arm64`.
+
     - Create a **script** key that contains an array of three elements.  Here we'll want to use `docker-compose` to build our testing container that we configured with our `docker-compose-test.yml` file.  We'll add a flag to tell Travis-CI to abort if we exit from the container.
 
         ```yaml
