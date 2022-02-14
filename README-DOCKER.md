@@ -146,7 +146,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
    We can verify that the image has been created by listing the docker images on your machine.
 
-   `docker images` 
+   `docker images`
 
 3. Create the container by running the image
 
