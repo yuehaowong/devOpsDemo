@@ -385,7 +385,7 @@ We know the value of testing. Let's set up another docker-compose config that wi
 
 If you're using an M1 Mac, the above build process will allow you to run your containerized application locally on your machine. However, in order to successfully integrate the Travis service for CI/CD later on in the unit, you'll need to follow some additional steps.
 
-Macs with the M1 chip have a Silicon processor, which uses a different CPU architecture (ARM) than computers with Intel processors (AMD). This means that there are differences between images built on these machines. There's one problem here: images built on ARM machines are not compatible with AMD machines, and vice versa. In the case of Travis CI, its servers use ARM architecture, which means that they cannot run the ARM images built on M1 Macs.
+Macs with the M1 chip have a Silicon processor, which uses a different CPU architecture (ARM) than computers with Intel processors (AMD). This means that there are differences between images built on these machines. There's one problem here: images built on ARM machines are not compatible with AMD machines, and vice versa. In the case of Travis CI, its servers use AMD architecture, which means that they cannot run the ARM images built on M1 Macs.
 
 Go to your organization page on DockerHub and open one of your image repositories, then open the "Tags" section to view your image. You'll be able to see which CPU architecture your image corresponds with: if you're using an Intel machine, this will be **amd64**, and if you're using an M1 machine, it will be **arm64**.
 
