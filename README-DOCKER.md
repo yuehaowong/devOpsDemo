@@ -146,7 +146,8 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
    We can verify that the image has been created by listing the docker images on your machine.
 
-   `docker images`
+   `docker images` 
+
 
 3. Create the container by running the image
 
@@ -379,6 +380,31 @@ We know the value of testing. Let's set up another docker-compose config that wi
 
 4. And now for the final test! Have your partner clone your forked repo to their local machine and run
    - `npm run docker-dev:hot`
+
+
+### Building multiplatform Docker images (M1 Mac)
+
+If you're using an M1 Mac, the above build process will allow you to run your containerized application locally on your machine. However, in order to successfully integrate the Travis service for CI/CD later on in the unit, you'll need to follow some additional steps.
+
+Macs with the M1 chip have a Silicon processor, which uses a different CPU architecture (ARM) than computers with Intel processors (AMD). This means that there are differences between images built on these machines. There's one problem here: images built on ARM machines are not compatible with AMD machines, and vice versa. In the case of Travis CI, its servers use ARM architecture, which means that they cannot run the ARM images built on M1 Macs.
+
+Go to your organization page on DockerHub and open one of your image repositories, then open the "Tags" section to view your image. You'll be able to see which CPU architecture your image corresponds with: if you're using an Intel machine, this will be **amd64**, and if you're using an M1 machine, it will be **arm64**.
+
+Luckily, there's a solution: we can use a plugin called [Docker Buildx](https://docs.docker.com/buildx/working-with-buildx/) to build images for multiple platforms.
+
+To build images with Buildx, use the `docker buildx build` command. You'll need to include the `--platform` option to specify which architectures to build images for, and the `--push` option to push your images to Docker Hub. Let's first try rebuilding your `mm-prod` image with Buildx:
+
+```
+docker buildx build \
+   --platform linux/amd64,linux/arm64,linux/arm/v7 \
+   -t [orgname]/mm-prod:latest \
+   --push \
+   .
+```
+
+In the tags section of your `mm-prod` repository on Docker Hub, you should now see that there are three different images for amd64, arm64, and arm architectures, each with a unique digest.
+
+Now, go ahead and build your `mm-dev` and `mm-postgres` images as well using the above steps. Remember that when building these images, you'll also need to include the `-f` flag to specify which Dockerfiles to use. If successful, you'll now be able to see three different images under all of your repositories in Docker Hub. 
 
 ## On to AWS
 
