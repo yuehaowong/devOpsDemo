@@ -63,7 +63,7 @@ Great, we have an AWS account!  Let's use it.  We'll start by creating a new app
     - We're going to deploy a containerized application, so select Docker as your preconfigured platform.
     - For the current configuation of our Docker containerization, you'll want to change your **Platform Branch** to:
 
-      - `Docker running on 64bit Amazon Linux`
+      - `Docker running on 64bit Amazon Linux 2`
 
     - In order to deploy your initial code, you'll need to zip it up into an archive file.  We should use git to do this. Run the following git command locally in the top level of your application's directory:
 
