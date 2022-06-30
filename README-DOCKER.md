@@ -425,7 +425,7 @@ Once you have successfully containerized your application and **both** partners 
 
    Fair question. What we'll need to do will depend on whether or not you know what version of the package you want. If you know the version, simply update your package.json and skip to step 3.
 
-   1. Create a file in your top level repo directory called `docker-compose.yml`. This is the docker-compose default configuration file.
+   1. Create a file in your top level repo directory called `docker-compose-extension.yml`. This is the docker-compose default configuration file.
 
       - Set the docker-compose **version** to 3
 
@@ -451,7 +451,7 @@ Once you have successfully containerized your application and **both** partners 
 
    2. We can now run this container and install the new dependency using
 
-      `docker-compose run --rm --service-ports bash npm install --save (or --save-dev) [package-name]`
+      `docker-compose-extension run --rm --service-ports bash npm install --save (or --save-dev) [package-name]`
 
    3. Remove the current mm-dev image
 
