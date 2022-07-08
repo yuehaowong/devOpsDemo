@@ -24,7 +24,7 @@ You are currently signed in with your root account.  This account should only be
 
 1. #### Create an admin group
 
-    - Create an group called `admin` and attach the `AdministratorAccess` policy to it.
+    - Create a group called `admin` and attach the `AdministratorAccess` policy to it.
 
 2. #### Create users
 
@@ -95,7 +95,6 @@ Yep!  SSH allows us to use a **key pair** where the server has a public key and 
     - This will create the public key and download a .pem file to your local machine.  You will want to take this file and place it in your ~/.ssh directory (create this if you don't have one already)
     - Private keys must have tight [file level security](https://www.linux.org/threads/file-permissions-chmod.4124/), so we'll change that using the linux command to 'change mode' on the file
         - `chmod 400 ~/.ssh/mm-ec2-key.pem`
-    - Now let's go set up the public key on our EC2 instance.  You'll need to save the Public IPv4 address for your EC2 instance for logging in. You can find that under EC2 -> Instances.
     - Now go over to the Elastic Beanstalk service and open the dashboard for your production environment.
     - Select Configuration -> Security and set your mm-ec2-key up as the EC2 key pair and wait for the environment to update. Updating the environment will most likely prompt AWS to create a new EC2 instance to reflect this security change, so ensure to reference the new EC2 instance for the following steps.
     - Now we can login to our instance from the command line by invoking ssh, providing the private key, and logging in as `ec2-user` (which is the default for new EC2 instances)
@@ -263,7 +262,7 @@ We're nearly done!  Now all we have to do is give our application all of the inf
 1. ### Chop down your Elastic Beanstalk
     Navigate to Services => Elastic Beanstalk => Applications, select your megamarkets application, then click Actions => Delete Application.  You’ll be shown a notification that indicates that the corresponding environment will be terminated upon deletion of the application.  Go ahead and confirm deletion.
 
-    Navigate to your Environments page and you should see the health of your environment change from red to grey.  The environment is now in the process of being torn down.  Clicking on the environment, you will see a grey spinner.  This is going to take a while, so go grab a snack and wait for your environment to turn down.  When the environment has been successfully terminated, the environment name will display with the (terminated) tag.
+    Navigate to your Environments page and you should see the health of your environment change from red to grey.  The environment is now in the process of being torn down.  Clicking on the environment, you will see a grey spinner.  This is going to take a while, so go grab a snack and wait for your environment to tear down.  When the environment has been successfully terminated, the environment name will display with the (terminated) tag.
 
 1. ### Empty and delete your Simple Storage Systems (S3) bucket
     We’re almost done!  Let’s navigate to Services => S3 to view your storage buckets!  Buckets are containers that store your data in S3.  Go ahead and select your S3 bucket and click Empty.  You cannot delete the bucket until it has been emptied. Upon a successful empty, you will see a green Success banner pop up at the top of your page.

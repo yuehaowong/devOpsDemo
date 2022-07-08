@@ -15,7 +15,7 @@ Before we get started, let's just make sure that the application loads with live
 2. Run `npm install`
 3. Run `npm run dev:hot`
 
-That should open up a browser window with the MegaMarkets app all set for further development.  To verify that it's working, hop over to client/styles.css and change the color of the text to something exciting.  You should see your change immediately reflected in the browser.  Yes?  Good.  No?  Send a help desk :smiley:
+That will start up your application, and open an unusual looking window in your browser. You can check out what this window is by looking in `webpack.config`.Navigate to the application on localhost in your browser to see megamarkets running.  To verify that it's working, hop over to client/styles.css and change the color of the text to something exciting.  You should see your change immediately reflected in the browser.  Yes?  Good.  No?  Send a help desk :smiley:
 
 Now that we have our baseline application working, let's containerize it.  We'll begin by deleting the node_modules.
 
@@ -24,3 +24,4 @@ Now that we have our baseline application working, let's containerize it.  We'll
 **...and we'll never npm install in this directory again!** We'll be sourcing our node_modules from an image the whole team can share.
 
 Now, let's get this app containerized.  Go ahead and open up the [README-DOCKER](https://github.com/CodesmithLLC/unit-13-devops/blob/master/README-DOCKER.md) file and get started.
+
