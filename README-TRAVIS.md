@@ -84,7 +84,7 @@ As we create these files, we'll need two things from AWS:
 
         - A **skip_cleanup** key with a value of `true`.  This tells Travis-CI not to clear out of the files it built after it runs the test, as we may be using some of those assets.
 
-        - An **on** key that has a key value pair of branch: master.  This tells Travis-CI that we only want to run this script on merges to the master branch.
+        - An **on** key that has a key value pair of branch: main.  This tells Travis-CI that we only want to run this script on merges to the main branch.
 
         - A **script** key that tells Travis-CI to run our bash script from Travis-CI's build directory ($TRAVIS_CI_BUILD, which is supplied by Travis-CI):
 
@@ -155,10 +155,11 @@ As we create these files, we'll need two things from AWS:
 It's all come down to this moment... we've containerized our application.  We've manually deployed it in the cloud.  We've set up CI/CD.  Now let's see it all work (fingers crossed!)
 
 1. Create a new feature branch in your source repo.
-1. Change some code -- update the color of your text in `styles.css`.
-1. Add, commit, and push your feature branch up to Github.
-1. In Github, create a Pull Request from your feature branch, to merge with `master`.
-1. Open the Pull Request.  Notice the `checks` tab.  From here we can hop over to Travis-CI and see how our `push` and `pull request` tests are doing.  Just follow the `build` link.  (Best to right click and open it in a new tab, otherwise it will load over your github page).  Once they complete successfully, you should be able to commit the merge.
-1. Once you `merge`, go back and watch that build on Travis. If that's successful, you should also open up your Elastic Beanstalk environment and watch it update.
-1. As soon as it is done, go check out your **live, full stack, containerized React/Redux application built with full continuous integration and deployment!!!**
+2. Change some code -- update the color of your text in `styles.css`.
+3. Add, commit, and push your feature branch up to Github.
+4. In Github, create a Pull Request from your feature branch, to merge with your `main` branch.
+    - **Note:** When creating a pull request from your fork, you will generally be redirected to the Pull Request page in the CodesmithLLC base repository. At the time of writing, the GitHub site has a glitch affecting certain repos with over 200 forks, which may prevent you from being able to search for your own fork in the dropdown menu. If this is the case, you will need to either a) change `CodesmithLLC` in the URL to your own GitHub handle to redirect the PR back to your fork, or b) merge your feature branch with your `main` branch locally, then push up to `main` instead of making a PR.
+5. Open the Pull Request.  Notice the `checks` tab.  From here we can hop over to Travis-CI and see how our `push` and `pull request` tests are doing.  Just follow the `build` link.  (Best to right click and open it in a new tab, otherwise it will load over your github page).  Once they complete successfully, you should be able to commit the merge.
+6. Once you `merge`, go back and watch that build on Travis. If that's successful, you should also open up your Elastic Beanstalk environment and watch it update.
+7. As soon as it is done, go check out your **live, full stack, containerized React/Redux application built with full continuous integration and deployment!!!**
 8. **CELEBRATE!!!  HIGH FIVE!! OMG!!**
