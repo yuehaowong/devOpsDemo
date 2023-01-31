@@ -136,7 +136,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
    - EXPOSE your server port (3000)
 
-   - Create an [ENTRYPOINT](https://www.devopsnipp.com/forum/devops-tools/docker-entrypoint-cmd-dockerfile-best-practices) where you'll run `node ./server/server.js`
+   - Create an [ENTRYPOINT](https://docs.docker.com/engine/reference/builder/#entrypoint) where you'll run `node ./server/server.js`
 
 2. Build the docker image from Dockerfile
 
