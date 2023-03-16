@@ -161,7 +161,7 @@ The RDS instance is running.  The EC2 instance can see it.  Now we just need to 
 
 ### Part 8 - Set up ECR (Elastic Container Registry)
 
-We won't be using ECR immediately, but this will become useful when we incorporate Continuous Deployment from Travis-CI.  It's really easy to set up.
+We won't be using ECR immediately, but this will become useful when we incorporate Continuous Deployment from GitHub Actions.  It's really easy to set up.
 
 1. #### Set up ECR
     - Head over to ECR from the Services menu and `Create a repository`.  Let's name it `mm` for megamarkets.
@@ -176,7 +176,17 @@ While IAM access control for users is managed with 'Users' and 'Groups', access 
     - Find and select `aws-elasticbeanstalk-ec2-role`
     - Attach the `AmazonEC2ContainerRegistryReadOnly` policy to this role.
 
-### Part 9 - Environment Variables
+### Part 9 - Create Access Key
+
+Also for the Continuous Deployment step later on, you'll want to create an Access Key to allow GitHub Actions to access your ECR.
+
+- Click on the dropdown menu for your account settings on the top-righthand side of the page, and click on "Security Credentials."
+
+- Scroll down to the "Access Keys" section, click "Create Access Key", and follow the steps to do so.
+
+- This will generate an **Access Key** as well as a **Secret Key**. You'll be able to view both immediately after creating them - be sure to save them somewhere or download the CSV file, as you won't be able to view the secret key again after this.
+
+### Part 10 - Environment Variables
 
 We're nearly done!  Now all we have to do is give our application all of the information it needs to connect to our database.  Because this requires sensitive data (username and password), best practice is to supply these values through **environment variables**.  We can set these up with Elastic Beanstalk.
 
@@ -190,13 +200,13 @@ We're nearly done!  Now all we have to do is give our application all of the inf
         - RDS_PASSWORD : [your password]
         - RDS_PORT : 5432
 
-### Part 10 - Verify that your application is working with the database
+### Part 11 - Verify that your application is working with the database
 
 1. Open the Dashboard for your environment and follow the URL at the top to see your application running in the cloud.
 
 1. Add some markets, cards, reload the page, **revel in the glory of your achievement!**
 
-1. Don't get carried away with that, though.  We've got one more thing to implement: [CI/CD](https://github.com/CodesmithLLC/unit-13-devops/blob/master/README-TRAVIS.md)
+1. Don't get carried away with that, though.  We've got one more thing to implement: [CI/CD](https://github.com/CodesmithLLC/unit-13-devops/blob/master/README-ACTIONS.md)
 
 1. Don't forget to tear down your AWS application when the unit is over!  Instructions are at the bottom of this ReadMe.
 
