@@ -9,13 +9,13 @@ Actions for a given project are made up of **workflows** - configuration files d
 You can find further information about how Actions work in [GitHub's official docs](https://docs.github.com/en/actions). Keep the docs handy and open - they will be a helpful reference from this point on!
 
 In this part of the challenge, we'll be setting up workflows for continuous integration and deployment on our MegaMarkets app. The end result will be as follows:
-- Whenever a pull request is made to the `main` branch, GitHub will run our unit tests (`/client/test/reducer-test.js) for continuous integration.
+- Whenever a pull request is made to the `main` branch, GitHub will run our unit tests (`/client/test/reducer-test.js`) for continuous integration.
 - When any changes are pushed or merged into the `main` branch, GitHub will first run our tests, and if they pass, deploy the updated code to AWS.
 
 
 ## Challenges
 
-### Part 1 - Configure the repo for Actions
+### Setup
 
 Actions workflows must always be stored in a `.github` directory at the top level of your repository.
 
@@ -24,7 +24,7 @@ Actions workflows must always be stored in a `.github` directory at the top leve
 Each workflow will be stored as an individual YAML file under the `.github/workflows` directory. We'll first be creating our workflow for integration testing, so let's move on!
 
 
-### Integration Testing
+### Part 1 - Integration Testing
 
 Our integration testing workflow will run our unit tests on any pull requests made to the `main` branch, so that we can ensure the new code passes before merging it in. We'll be instructing GitHub to use our public Docker images to spin up a container and run the tests.
 
@@ -56,7 +56,7 @@ Now, it's time to test your workflow!
 5. You'll be able to view your Actions workflows from either the "Actions" tab on the main repo, or the "Checks" tab on the Pull Request page. If you've set everything up correctly, you should see your `build-tests` workflow running, and the tests should pass. If your workflow fails, you'll want to expand it to look at the error messages, and debug from there. If it passes, you're ready to move on to the next section and set up continuous deployment!
 
 
-### Continuous Integration & Deployment
+### Part 2 - Continuous Integration & Deployment
 
 We're going to create a new workflow for deployment. This one will run two jobs: our tests, and then a script to deploy our application to ElasticBeanstalk.
 
