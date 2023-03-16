@@ -37,8 +37,8 @@ Our integration testing workflow will run our unit tests on any pull requests ma
 - The **jobs** dictionary contains a key for every job that is part of a workflow. As above, each job will be stored as another dictionary. Our workflow, for now, will just have one job - let's call it **unit-testing**. (If we also had integration or end-to-end tests set up, we could add separate jobs for these as well.)
 
 - Our unit-testing job should include the following keys:
-    -    **runs-on** will determine which type of machine the job will run on. GitHub offers various MacOS, Windows, and Linux runners - here, we'll be using the latest version of Ubuntu. Set this key to `ubuntu-latest`.
-    -    **steps** defines the sequence of tasks that will make up our job. It will be an array of key-value pairs.
+    - **runs-on** will determine which type of machine the job will run on. GitHub offers various MacOS, Windows, and Linux runners - here, we'll be using the latest version of Ubuntu. Set this key to `ubuntu-latest`.
+    - **steps** defines the sequence of tasks that will make up our job. It will be an array of key-value pairs.
         - Our first step will make use of a pre-published, reusable Actions workflow called [Checkout](https://github.com/actions/checkout), which checks out our latest commit to the runner's default working directory. This allows our workflow to access it. To use Checkout, we'll include a key called **uses** and set it to `actions/checkout@v3`.
         - Our next step will actually run our tests. It will consist of a **run** key, whose value is the script we want to run. We'll be using `docker-compose` to build our testing container that we configured with our `docker-compose-test.yml` file.  We'll add a flag to tell GitHub to abort if we exit from the container. 
 
