@@ -17,9 +17,20 @@ In this part of the challenge, we'll be setting up workflows for continuous inte
 
 ### Setup
 
+#### Enable Actions
+
+To start off, you'll need to ensure that Actions are enabled on your GitHub repo. To do this:
+
+- Navigate to the _"Settings"_ tab
+- Expand the _"Actions"_ menu
+- Make sure the _"Allow actions and reusable workflows"_ option is selected
+- Click _"Save"_
+
+#### .github directory
+
 Actions workflows must always be stored in a `.github` directory at the top level of your repository.
 
-- To start, create this directory, and add a subfolder called `workflows`. By default, GitHub will look here to find any workflows that it should run.
+- Create this directory, and add a subfolder called `workflows`. By default, GitHub will look here to find any workflows that it should run.
 
 Each workflow will be stored as an individual YAML file under the `.github/workflows` directory. We'll first be creating our workflow for integration testing, so let's move on!
 
