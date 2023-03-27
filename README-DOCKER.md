@@ -45,7 +45,7 @@ This would mount the current directory: `./` to `/usr/src/app` in the container.
 
 1. Install Docker
 
-   - Each partner should go to [docker.com](http://docker.com/), then download and install Docker for your OS. (You'll be required to create a docker account to do this. Remember your dockerId, you'll use it in the next step). 
+   - Each pair partner should go to [docker.com](http://docker.com/), then download and install Docker for your OS. (You'll be required to create a docker account to do this. Remember your dockerId, you'll use it in the next step)
 
    - Native Windows and WSL Users: Follow this [link](https://github.com/CodesmithLLC/unit-13-devops/blob/master/README-WSL.md).
 
@@ -53,7 +53,12 @@ This would mount the current directory: `./` to `/usr/src/app` in the container.
 
    We have a way to collaboratively share code with Github. Docker Hub gives us a way to collaboratively share images.
 
-   - One of you head over to [Docker Hub](https://hub.docker.com) and create an account with the dockerID that you used when you installed Docker. You'll be working from a single Docker account for the duration of this challenge, so only partner needs to do this.
+   - One of you head over to [Docker Hub](https://hub.docker.com) and create an account with the dockerID that you used when you installed Docker.
+
+   - Create an organization. The name will need to be unique across all of Docker Hub, so this may take a couple of attempts. You'll use this name as you go through the challenge anywhere you see `[orgname]`. 
+      - You will be asked to select a plan for your new organization. Choose the ‘buy now’ option on the Team plan and disregard the pricing info, we will be bypassing this to create a free version. When asked to set up your organization’s size, use the default settings and continue to the payment section. At this point you will be asked to enter your payment info. To bypass this, click the ‘Organizations’ tab on the top navbar to redirect to your newly created free organization.
+
+   - Add your partner to the **owners** team by entering their dockerID
 
 Okay, setup complete! On to the...
 
@@ -100,7 +105,7 @@ docker rm $(docker ps -q -a -f 'name=mm-') --force
 #### Remove images
 
 ```bash
-docker image rm $(docker images [accountname]/mm* -q) --force
+docker image rm $(docker images [orgname]/mm* -q) --force
 ```
 
 #### Remove volumes
@@ -112,7 +117,7 @@ docker volume rm $(docker volume ls -q -f 'name=unit-13*') --force
 One _could_ even consider putting these commands together in their package.json script using `&&` to ensure that each prior command was successful before executing the next in the chain...
 
 ```bash
-docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker image rm $(docker images [accountname]/mm* -q) --force && docker volume rm $(docker volume ls -q -f 'name=unit-13*') --force
+docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker image rm $(docker images [orgname]/mm* -q) --force && docker volume rm $(docker volume ls -q -f 'name=unit-13*') --force
 ```
 
 ### Part 1 - Dockerfile
@@ -137,7 +142,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
    Tag the image as mm-prod so it will be easy to recognize and reference. By default, docker will look for a file named Dockerfile. We'll take advantage of that later when we upload this repo to AWS. Finally tell it to build in the current directory with `.`.
 
-   `docker build -t [accountname]/mm-prod .`
+   `docker build -t [orgname]/mm-prod .`
 
    We can verify that the image has been created by listing the docker images on your machine.
 
@@ -147,7 +152,7 @@ docker-remove-all: docker rm $(docker ps -q -a -f 'name=mm-') --force && docker 
 
    We'll open port 3001 on our localhost and point to port 3000 in the container. (These could be the same value, we're just differentiating for clarity here)
 
-   `docker run -p 3001:3000 [accountname]/mm-prod`
+   `docker run -p 3001:3000 [orgname]/mm-prod`
 
    You should see the server start up. Now just go to your browser and navigate to localhost:3001 to see the application running from within your container! (You can also run the container in 'detached' mode by passing the `-d` flag. This will run the container and give you access to your command line.)
 
@@ -195,7 +200,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
    Tag the image as mm-dev so it will be easy to recognize and reference. This time, we'll tell docker to use our Dockerfile-dev file using the -f parameter
 
-   `docker build -t [accountname]/mm-dev -f Dockerfile-dev .`
+   `docker build -t [orgname]/mm-dev -f Dockerfile-dev .`
 
    Let's verify that the image has been created by listing the docker images on your machine.
 
@@ -219,7 +224,7 @@ To begin, let's build an image that will create a container running webpack-dev-
 
      - Under **dev**, create the following:
 
-       - An **image** key pointing to your [accountname]/mm-dev image
+       - An **image** key pointing to your [orgname]/mm-dev image
 
        - A **container_name** key set to something meaningful like 'mm-dev-hot'
 
@@ -265,7 +270,7 @@ Okay, we've got a containerized environment with live reloading/HMR working for 
 
    Tag the image as mm-postgres so it will be easy to recognize and reference. We'll tell it to look for the Dockerfile-postgres using the -f parameter
 
-   `docker build -t [accountname]/mm-postgres -f Dockerfile-postgres .`
+   `docker build -t [orgname]/mm-postgres -f Dockerfile-postgres .`
 
    Let's verify that the image has been created by listing the docker images on your machine.
 
@@ -277,7 +282,7 @@ Okay, we've got a containerized environment with live reloading/HMR working for 
 
    - Under **postgres-db**, create the following:
 
-     - An **image** key pointing to your [accountname]/mm-postgres image
+     - An **image** key pointing to your [orgname]/mm-postgres image
 
      - A **container_name** key set to something meaningful like 'mm-database'
 
@@ -317,7 +322,7 @@ We know the value of testing. Let's set up another docker-compose config that wi
 
      - Under **test**, create the following:
 
-       - An **image** key pointing to your [accountname]/mm-dev image
+       - An **image** key pointing to your [orgname]/mm-dev image
 
        - A **container_name** key set to something meaningful like 'mm-test'
 
@@ -335,7 +340,7 @@ We know the value of testing. Let's set up another docker-compose config that wi
 
      - Under **postgres-db-test**, create the following:
 
-       - An **image** key pointing to your [accountname]/mm-postgres image
+       - An **image** key pointing to your [orgname]/mm-postgres image
 
        - A **container_name** key set to something meaningful like 'mm-test-database'
 
@@ -364,9 +369,9 @@ We know the value of testing. Let's set up another docker-compose config that wi
 
 1. Now we can push our images up to Docker Hub to be shared with the development team
 
-   - `docker push [accountname]/mm-postgres`
-   - `docker push [accountname]/mm-dev`
-   - `docker push [accountname]/mm-prod`
+   - `docker push [orgname]/mm-postgres`
+   - `docker push [orgname]/mm-dev`
+   - `docker push [orgname]/mm-prod`
 
 2. Check the 'Repositories' tab in Docker Hub to verify that your images are there
 
@@ -399,7 +404,7 @@ To build images with Buildx, use the `docker buildx build` command. You'll need 
 ```
 docker buildx build \
    --platform linux/amd64,linux/arm64,linux/arm/v7 \
-   -t [accountname]/mm-prod:latest \
+   -t [orgname]/mm-prod:latest \
    --push \
    .
 ```
@@ -432,7 +437,7 @@ Once you have successfully containerized your application and **both** partners 
 
      - Under **services**, create a **bash** dictionary, so when we run `docker-compose bash`, it will know to look here. We'll add other services later when we incorporate CI/CD. For now, the rest of this goes under the **bash** dictionary.
 
-     - Create an **image** element pointing to your [accountname]/mm-dev image
+     - Create an **image** element pointing to your [orgname]/mm-dev image
 
      - Create a **container_name** element set to something meaningful like 'mm-dev'
 
@@ -450,14 +455,14 @@ Once you have successfully containerized your application and **both** partners 
 
    3. Remove the current mm-dev image
 
-      `docker image rm [accountname]/mm-dev --force`
+      `docker image rm [orgname]/mm-dev --force`
 
    4. Build a new image with your updated package.json
 
-      `docker build -t [accountname]/mm-dev -f Dockerfile-dev .`
+      `docker build -t [orgname]/mm-dev -f Dockerfile-dev .`
 
    5. Now we can push our new image with the updated dependencies to Docker hub.
 
-      `docker push [accountname]/mm-dev`
+      `docker push [orgname]/mm-dev`
 
       Note: In order for other members of your team to get access to your new image, they'll need to clear out the image on their machines and pull the latest version.
