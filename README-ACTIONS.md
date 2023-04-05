@@ -159,7 +159,7 @@ This bash script moves all the files from our current build to the appropriate p
     
 *Remember to swap out any values below in [ ] with appropriate values for your application (e.g. S3 BUCKET NAME, YOUR AWS REGION)*
 
-    ```bash
+    ```
     echo "Processing deploy.sh"
     # Set EB BUCKET as env variable
     EB_BUCKET=[S3 BUCKET NAME]
