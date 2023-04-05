@@ -159,7 +159,7 @@ This bash script moves all the files from our current build to the appropriate p
     
 *Remember to swap out any values below in [ ] with appropriate values for your application (e.g. S3 BUCKET NAME, YOUR AWS REGION)*
 
-    ```
+```bash
     echo "Processing deploy.sh"
     # Set EB BUCKET as env variable
     EB_BUCKET=[S3 BUCKET NAME]
@@ -183,7 +183,7 @@ This bash script moves all the files from our current build to the appropriate p
     aws elasticbeanstalk create-application-version --application-name [your eb application name] --version-label $GITHUB_SHA --source-bundle S3Bucket=$EB_BUCKET,S3Key=mm-prod-deploy.zip
     # Update environment to use new version number
     aws elasticbeanstalk update-environment --environment-name [your eb environment name] --version-label $GITHUB_SHA
-    ```
+```
 
 ### Part 3 - Deploy!
 
