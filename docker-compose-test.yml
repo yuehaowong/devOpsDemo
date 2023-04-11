@@ -1,0 +1,28 @@
+version: "3"
+services:
+  test:
+    image: codesmithdemo/mm-dev
+    container_name: "mm-test"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
+    depends_on:
+      - postgres-db-test
+    command: npm run test
+  postgres-db-test:
+    image: codesmithdemo/mm-postgres
+    container_name: mm-test-database
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=mmadmin
+      - POSTGRES_DB=mmdb
+    volumes:
+      - test-db-volume:/var/lib/postgresql/data
+    
+
+# shared volumes for development
+volumes:
+  test-db-volume:
+  node_modules:

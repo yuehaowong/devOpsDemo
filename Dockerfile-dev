@@ -1,0 +1,16 @@
+# baseline image of nodev16.13
+FROM node:16.13
+
+# globally install webpack in container
+RUN npm install webpack -g
+
+# Setup working directory for app in container
+WORKDIR /usr/src/app
+
+# COPY your package*.json (to get both package and package-lock) files to the WORKDIR in the container
+COPY package*.json /usr/src/app
+# RUN a command to npm install node_modules in container
+RUN npm i
+
+# Expose your server port
+EXPOSE 3000
