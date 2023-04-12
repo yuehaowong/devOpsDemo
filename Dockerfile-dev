@@ -9,6 +9,7 @@ WORKDIR /usr/src/app
 
 # COPY your package*.json (to get both package and package-lock) files to the WORKDIR in the container
 COPY package*.json /usr/src/app
+
 # RUN a command to npm install node_modules in container
 RUN npm i
 
