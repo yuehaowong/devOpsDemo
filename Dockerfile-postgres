@@ -6,3 +6,5 @@ FROM postgres:12.8
 # This will create and populate our database in the container.
 
 COPY ./scripts/db_init.sql /docker-entrypoint-initdb.d/ 
+
+
